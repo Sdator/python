@@ -1,0 +1,37 @@
+
+
+商，余数 = divmod(除数，被除数)   返回两个参数  一个商一个余数
+
+dir()                   打印对象的所有属性和方法
+type()                  判断变量的裂隙  用于判断基础类型
+isinstance(123, int)    判断变量的类型  主要用于判断类
+
+对象
+    getattr()
+    setattr(obj, 'y', 19)       设置一个属性'y'  /方法
+    hasattr(obj,"x")            是否包含某个属性/方法
+    getattr(obj, 'y')           获取属性'y'  /方法
+    getattr(obj, 'z', 404)      获取属性'z'，如果不存在，返回默认值404
+    果试图获取不存在的属性，会抛出AttributeError的错误：
+
+
+    __slots__=('x','y')      限制实例所能绑定的属性 定义的属性仅对当前类实例起作用，对继承的子类是不起作用的：
+
+    getter和setter
+        @property               getter 装饰器就是负责把一个方法变成属性调用 把一个getter方法变成属性，只需要加上@property
+            def score(self):
+        @xxx.setter             setter
+            def score(self, value):
+
+     @unique            装饰器可以帮助我们检查保证没有重复值。           
+
+    __call__        能使得实例可以直接调用  调用的对象就是一个Callable对象
+        callable()      判断一个对象是否是“可调用”对象。
+    __str__         打印输出
+    __repr__        调试输出
+    __getattr__     获取不存的属性默认会报错可通过__getattr__方法来处理
+
+字符串
+    lower()     大写转小写
+
+

@@ -1,0 +1,10 @@
+/.vscode/*/
+/.vscode/Code/*
+!/.vscode/Code/
+!/.vscode/Code/Backups/
+
+!/.vscode/Code/User/
+/.vscode/Code/User/*
+!/.vscode/Code/User/keybindings.json
+
+/__pycache__

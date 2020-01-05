@@ -1,0 +1,12 @@
+常用指令：
+    指定下载源
+        pip install 库名 -i pip源
+
+    卸载库
+        pip uninstall 库名
+
+    第三方库目录
+        Lib -> site-packages
+
+    代码检测 pylint
+        python.exe -m pip install -U pylint --user

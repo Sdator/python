@@ -1,0 +1,47 @@
+{
+    // 有关 tasks.json 格式的文档，请参见
+    // https://go.microsoft.com/fwlink/?LinkId=733558
+    "version": "2.0.0",
+    "type": "shell",
+    "tasks": [
+        {
+            "label": "执行批处理文件",
+            "command": "start ${file}"
+        },
+        {
+            "label": "py",
+            "command": "python",
+            "args": [
+                "${file}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "APK脚本",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "${fileDirname}\\AutoHotkeyU64.exe",
+                "${file}"
+            ]
+        },
+        {
+            "label": "echo",
+            "command": "echo",
+            "args": [
+                "${fileDirname}\\AutoHotkeyU64.exe\n",
+                "${file}",
+            ]
+        },
+        {
+            "label": "十六进制",
+            "command": "xxd",
+            "args": [
+                "${file}",
+            ]
+        },
+    ]
+}

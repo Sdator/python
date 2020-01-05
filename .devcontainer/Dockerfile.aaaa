@@ -1,0 +1,69 @@
+#-------------------------------------------------------------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
+#-------------------------------------------------------------------------------------------------------------
+
+FROM python:3
+
+# Avoid warnings by switching to noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+
+# This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
+# property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
+# will be updated to match your local UID/GID (when using the dockerFile property).
+# See https://aka.ms/vscode-remote/containers/non-root-user for details.
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Uncomment the following COPY line and the corresponding lines in the `RUN` command if you wish to
+# include your requirements in the image itself. It is suggested that you only do this if your
+# requirements rarely (if ever) change.
+# 是否需要某些第三方库
+# COPY requirements.txt /tmp/pip-tmp/
+
+# Configure apt and install packages
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
+    #
+    # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
+    && apt-get -y install git iproute2 procps lsb-release \
+    #
+    # Install pylint
+    && pip --disable-pip-version-check --no-cache-dir install pylint \
+    #
+    # Update Python environment based on requirements.txt
+    # 安装 requirements.txt 中的库
+    # && pip --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
+    # && rm -rf /tmp/pip-tmp \
+    #
+    # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
+    # 创建一个新的工作组
+    && groupadd --gid $USER_GID $USERNAME \
+    # 创建用户
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    # [Optional] Add sudo support for the non-root user
+    # 为非root用户添加sudo支持 也就是默认使用sudo权限执行
+    && apt-get install -y sudo \
+    # /etc/sudoers文件以及/etc/sudoers.d/目录下的文件主要是用来控制用户的访问权限的
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
+    # 设置用户的访问权限
+    && chmod 0440 /etc/sudoers.d/$USERNAME \
+    #
+    # Clean up
+    # 卸载所有自动安装且不再使用的软件包
+    # 将已经删除了的软件包的.deb安装文件从硬盘中删除掉
+    && apt-get autoremove -y \
+    # 把已安装的软件包的安装包也删除掉
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Switch back to dialog for any ad-hoc use of apt-get
+ENV DEBIAN_FRONTEND=dialog
+
+
+
+    #     apt-get remove 软件包名称：
+    #     删除已安装的软件包（保留配置文件）。
+    # apt-get --purge remove 软件包名称：
+    #      删除已安装包（不保留配置文件)。
