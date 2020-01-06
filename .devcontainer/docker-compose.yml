@@ -5,12 +5,12 @@ services:
     # image: sdator/seed
     build: 
       context: ..
-      dockerfile: .devcontainer/Dockerfile
+      dockerfile: .devcontainer/docker.pl
     # ports:
       # - 8000:8000
     volumes:
-      - ~/.gitconfig:~/.ssh
-      - ~/.ssh:~/.ssh
+      - ~/.gitconfig:/root/.gitconfig
+      - ~/.ssh:/root/.ssh
       - ..:/workspace
     # command: sleep infinity
     # environment:
