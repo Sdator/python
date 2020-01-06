@@ -18,6 +18,8 @@
 	"postCreateCommand": "pip install -r .devcontainer/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
 	// 推荐插件
 	"extensions": [
-		"ms-python.python"
+		"ms-python.python",
+		"eamodio.gitlens"
+
 	]
 }
