@@ -1,0 +1,17 @@
+version: '3'
+services:
+  python-dev:
+    container_name: python-dev
+    image: sdator/seed
+    # build: 
+      # context: ..
+      # dockerfile: .devcontainer/Dockerfile
+    # ports:
+      # - 8000:8000
+    volumes:
+      - ~/.gitconfig:/root/.gitconfig
+      - ..:/workspace
+    # command: sleep infinity
+    # environment:
+      # Django web框架需要用到
+      # DJANGO_SETTINGS_MODULE: tweeter3.settings.devcontainer
