@@ -1,6 +1,6 @@
 version: '3'
 services:
-  python-dev:
+  python:
     container_name: python-dev
     image: sdator/seed
     # build: 
@@ -9,7 +9,7 @@ services:
     # ports:
       # - 8000:8000
     volumes:
-      - ~/.gitconfig:/root/.gitconfig
+      # - ~/.gitconfig:/root/.gitconfig
       - ..:/workspace
     # command: sleep infinity
     # environment:

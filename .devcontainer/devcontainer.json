@@ -4,8 +4,14 @@
 	"name": "Python 3",
 	// "context": "..",
 	// "dockerFile": "Dockerfile",
-	"dockerFile": "docker-compose.yml",
-
+	// "dockerFile": "docker-compose.yml",
+	// "Image":"sdator/seed:alpine",
+	// 配置文件
+	"dockerComposeFile": "docker-compose.yml",
+	// 连接到的服务
+	"service": "python",
+	// 连接容器后进入的工作目录
+	"workspaceFolder": "/workspace",
 	// Use 'settings' to set *default* container specific settings.json values on container create. 
 	// You can edit these settings after create using File > Preferences > Settings > Remote.
 
