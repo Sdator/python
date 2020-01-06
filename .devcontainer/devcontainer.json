@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/python-3
 {
 	"name": "Python 3",
-	"context": "..",
+	// "context": "..",
 	"dockerFile": "Dockerfile",
 
 	// Use 'settings' to set *default* container specific settings.json values on container create. 
