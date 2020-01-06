@@ -1,15 +1,15 @@
 version: '3'
 services:
-  python:
+  asddd:
     container_name: python-dev
-    image: sdator/seed
-    # build: 
-      # context: ..
-      # dockerfile: .devcontainer/Dockerfile
+    # image: sdator/seed
+    build: 
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
     # ports:
       # - 8000:8000
     volumes:
-      # - ~/.gitconfig:/root/.gitconfig
+      - ~/.gitconfig:/root/.gitconfig
       - ..:/workspace
     # command: sleep infinity
     # environment:
