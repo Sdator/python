@@ -20,8 +20,13 @@
 	"remoteUser": "vscode",
 	// 推荐插件
 	"extensions": [
+		// py插件
 		"ms-python.python",
-		"eamodio.gitlens"
+		// git插件
+		"eamodio.gitlens",
+		// docker插件
+		"ms-azuretools.vscode-docker"
+
 
 	]
 }
