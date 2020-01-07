@@ -1,20 +1,22 @@
 version: "3"
-services:
-  python-dev:
-    container_name: python-dev
-    build:
-      context: ..
-      dockerfile: .devcontainer/alpine.Dockerfile
-    volumes:
-      - ~/.gitconfig:/root/.gitconfig
-      # - ~/.ssh:/~/.ssh
-      - ..:/workspace
+  services:
+    py-dev:
+      container_name: py-dev
+      image: sdator/py
+      # build: 
+      #   context: ..
+      #   dockerfile: .devcontainer/alpine.Dockerfile
+      # volumes:
+      #   - ~/.gitconfig:/root/.gitconfig
+      #   - ~/.ssh:/~/.ssh
+        # - ..:/workspace
+      # ports:
+      # - 8000:8000
+      # command: sleep infinity
+      # environment:
 
+      # Django web框架需要用到
 
-        # image: sdator/seed
-    # ports:
-    # - 8000:8000
-    # command: sleep infinity
-    # environment:
-    # Django web框架需要用到
-    # DJANGO_SETTINGS_MODULE: tweeter3.settings.devcontainer
+      # DJANGO_SETTINGS_MODULE: tweeter3.settings.devcontainer
+      
+      command: /bin/sh -c "while sleep 1000; do :; done"

@@ -27,6 +27,7 @@ RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositori
         sudo \
         bash \
         git \
+        openssh \
         curl \
         python3 \
     && curl https://bootstrap.pypa.io/get-pip.py| python3 - \
