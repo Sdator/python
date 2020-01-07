@@ -14,7 +14,7 @@ ARG USER_GID=$USER_UID
 # http://dl-cdn.alpinelinux.org/alpine/v3.11/main
 # http://dl-cdn.alpinelinux.org/alpine/v3.11/community
 # 直接替换镜像地址 因为根据内核版本是会改变的
-RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories\
+RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
     && apk --update add --no-cache \
         libuuid \
         gcc \

@@ -3,8 +3,14 @@
 by 绝 2019.4.27
 
 '''
+import sys,os
 
-from AirCom import *
+# 添加当前工作目录到搜索路径中 为了能让模块找到入口
+sys.path.append(os.getcwd())
+
+# from lib.AirCom import *
+import lib.AirCom
+
 
 class MDX(object):
 
