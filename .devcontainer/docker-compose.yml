@@ -13,10 +13,5 @@ version: "3"
       # ports:
       # - 8000:8000
       # command: sleep infinity
-      # environment:
-
-      # Django web框架需要用到
-
-      # DJANGO_SETTINGS_MODULE: tweeter3.settings.devcontainer
-      
+      # environment:    
       command: /bin/sh -c "while sleep 1000; do :; done"
