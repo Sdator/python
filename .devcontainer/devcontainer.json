@@ -10,6 +10,12 @@
 	// "dockerComposeFile": "docker-compose.yml",
 	// 连接到的服务
 	"service": "python-dev",
+	// 本地文件映射到容器中  不会设置 用runArgs代替
+	// "mounts":["source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached"],
+	"runArgs": [
+		"-v",
+		"~/.ssh:/home/vscode/.ssh:ro"
+	  ],
 	// 连接容器后进入的工作目录
 	// "workspaceFolder": "/workspace",
 	// vscode断开连接或者关闭时，是否停止容器
