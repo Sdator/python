@@ -15,9 +15,24 @@
 	// vscode断开连接或者关闭时，是否停止容器
 	"shutdownAction": "stopCompose",
 	// 每次启动执行安装
-	"postCreateCommand": "pip install -r .devcontainer/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
+	"postCreateCommand": "pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
 	// 使用指定用户登录
 	"remoteUser": "vscode",
+	// vscode 用户设置
+	"settings": {
+		// 终端路径
+		"terminal.integrated.shell.linux": "/bin/bash",
+		// 默认对Python文件进行静态检查
+		"python.linting.enabled": true,
+		// 默认在Python文件保存时进行静态检查
+		"python.linting.lintOnSave": true,
+		// 默认使用pylint对Python文件进行静态检查
+		"python.linting.pylintEnabled": true,
+		// py路径
+		"python.pythonPath": "/usr/bin/python3",
+		// pylint 路径
+		"python.linting.pylintPath": "/usr/bin/pylint"
+	},
 	// 推荐插件
 	"extensions": [
 		// py插件
@@ -26,7 +41,5 @@
 		"eamodio.gitlens",
 		// docker插件
 		"ms-azuretools.vscode-docker"
-
-
 	]
 }
