@@ -1,18 +1,20 @@
-version: '3'
+version: "3"
 services:
-  asddd:
+  python-dev:
     container_name: python-dev
-    # image: sdator/seed
-    build: 
+    build:
       context: ..
-      dockerfile: .devcontainer/docker.pl
-    # ports:
-      # - 8000:8000
+      dockerfile: .devcontainer/alpine.Dockerfile
     volumes:
       - ~/.gitconfig:/root/.gitconfig
-      - ~/.ssh:/root/.ssh
+      # - ~/.ssh:/~/.ssh
       - ..:/workspace
+
+
+        # image: sdator/seed
+    # ports:
+    # - 8000:8000
     # command: sleep infinity
     # environment:
-      # Django web框架需要用到
-      # DJANGO_SETTINGS_MODULE: tweeter3.settings.devcontainer
+    # Django web框架需要用到
+    # DJANGO_SETTINGS_MODULE: tweeter3.settings.devcontainer
