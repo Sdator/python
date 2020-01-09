@@ -6,11 +6,16 @@ services:
     build:
       dockerfile: .devcontainer/alpine.Dockerfile
       context: ..
+      args:
+        USERNAME: vscode
     volumes:
       # - ~/.gitconfig:/root/.gitconfig
       - ~/.ssh:/root/.ssh:cached
       - ..:/workspace:cached
+    user: vscode
+    # working_dir: /workspace
+    tty: true
     # ports:
     # - 8000:8000
     # environment:
-    command: /bin/sh -c "while sleep 1000; do :; done"
+    # command: /bin/sh -c "while sleep 1000; do :; done"

@@ -22,9 +22,9 @@
 	"shutdownAction": "stopCompose",
 	// 每次启动执行安装
 	// "postCreateCommand": "pip install -r .devcontainer/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
-	"postCreateCommand": "ln -s /root/.ssh ~/.ssh",
+	// "postCreateCommand": "ln -s /root/.ssh ~/.ssh",
 	// 使用指定用户登录
-	"remoteUser": "vscode",
+	// "remoteUser": "vscode",
 	// vscode 用户设置
 	"settings": {
 		// 终端路径
