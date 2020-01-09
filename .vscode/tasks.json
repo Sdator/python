@@ -5,10 +5,6 @@
     "type": "shell",
     "tasks": [
         {
-            "label": "执行批处理文件",
-            "command": "start ${file}"
-        },
-        {
             "label": "py",
             "command": "python",
             "args": [
@@ -20,26 +16,10 @@
             }
         },
         {
-            "label": "APK脚本",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "${fileDirname}\\AutoHotkeyU64.exe",
-                "${file}"
-            ]
-        },
-        {
             "label": "echo",
             "command": "echo",
             "args": [
                 "${fileDirname}\\AutoHotkeyU64.exe\n",
-                "${file}",
-            ]
-        },
-        {
-            "label": "十六进制",
-            "command": "xxd",
-            "args": [
                 "${file}",
             ]
         },
