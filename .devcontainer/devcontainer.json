@@ -13,15 +13,16 @@
 	// 本地文件映射到容器中  不会设置 用runArgs代替
 	// "mounts":["source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached"],
 	// "runArgs": [
-	// 	"-v",
-	// 	"~/.ssh:/home/vscode/.ssh:ro"
+	// "-v",
+	// "~/.ssh:/home/vscode/.ssh:ro"
 	//   ],
 	// 连接容器后进入的工作目录
-	// "workspaceFolder": "/workspace",
+	"workspaceFolder": "/workspace",
 	// vscode断开连接或者关闭时，是否停止容器
 	"shutdownAction": "stopCompose",
 	// 每次启动执行安装
-	"postCreateCommand": "pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
+	// "postCreateCommand": "pip install -r .devcontainer/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
+	// "postCreateCommand": "uname -a",
 	// 使用指定用户登录
 	"remoteUser": "vscode",
 	// vscode 用户设置
@@ -44,8 +45,8 @@
 		// py插件
 		"ms-python.python",
 		// git插件
-		"eamodio.gitlens",
+		// "eamodio.gitlens",
 		// docker插件
-		"ms-azuretools.vscode-docker"
+		// "ms-azuretools.vscode-docker"
 	]
 }

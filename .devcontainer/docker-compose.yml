@@ -1,17 +1,16 @@
 version: "3"
-  services:
-    py-dev:
-      container_name: py-dev
-      image: sdator/py
-      # build: 
-      #   context: ..
-      #   dockerfile: .devcontainer/alpine.Dockerfile
-      # volumes:
-      #   - ~/.gitconfig:/root/.gitconfig
-      #   - ~/.ssh:/~/.ssh
-        # - ..:/workspace
-      # ports:
-      # - 8000:8000
-      # command: sleep infinity
-      # environment:    
-      command: /bin/sh -c "while sleep 1000; do :; done"
+services:
+  py-dev:
+    container_name: py-dev
+    image: sdator/py
+    build:
+      dockerfile: .devcontainer/alpine.Dockerfile
+      context: ..
+    volumes:
+      # - ~/.gitconfig:/root/.gitconfig
+      # - ~/.ssh:~/.ssh
+      - ..:/workspace:cached
+    # ports:
+    # - 8000:8000
+    # environment:
+    command: /bin/sh -c "while sleep 1000; do :; done"
