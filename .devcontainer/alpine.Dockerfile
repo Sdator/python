@@ -20,7 +20,7 @@ RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositori
         # automake   \
         # g++  \
         # python3-dev \
-        # sudo \
+        sudo \
         # bash \
         git \
         openssh \
@@ -32,7 +32,7 @@ RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositori
     # 添加用户组
     && addgroup -g $USER_GID $USERNAME \
     # 添加用户
-    && adduser -s /bin/bash -u $USER_UID -G $USERNAME -D $USERNAME \
+    && adduser -s /bin/sh -u $USER_UID -G $USERNAME -D $USERNAME \
     # 设置用户权限
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME

@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/python-3
 {
-	"name": "PY",
+	"name": "PY-Dev",
 	// 容器构建过程上下文目录
 	// "context": "..",
 	// "dockerFile": "alpine.Dockerfile",
@@ -28,7 +28,7 @@
 	// vscode 用户设置
 	"settings": {
 		// 终端路径
-		"terminal.integrated.shell.linux": "/bin/bash",
+		// "terminal.integrated.shell.linux": "/bin/sh",
 		// 默认对Python文件进行静态检查
 		"python.linting.enabled": true,
 		// 默认在Python文件保存时进行静态检查
