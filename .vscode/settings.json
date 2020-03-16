@@ -1,6 +1,8 @@
 {
-    "python.pythonPath": "/usr/bin/python3",
-    "python.linting.pylintEnabled": true,
+    // "python.pythonPath": "D:\\Apps\\Scoop\\apps\\python\\current\\python.exe",
+    // "python.linting.pylintEnabled": true,
     "terminal.integrated.shell.windows": "C:\\ScoopApp\\git\\current\\bin\\bash.exe",
+    "python.pythonPath": "D:\\Apps\\Scoop\\shims\\python.exe",
+    "python.linting.enabled": false,
    
 }

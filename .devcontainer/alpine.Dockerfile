@@ -21,7 +21,7 @@ RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositori
         # g++  \
         # python3-dev \
         sudo \
-        # bash \
+        bash \
         git \
         openssh \
         # curl \
@@ -33,6 +33,6 @@ RUN sed -i -e 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositori
     && addgroup -g $USER_GID $USERNAME \
     # 添加用户
     && adduser -s /bin/sh -u $USER_UID -G $USERNAME -D $USERNAME \
-    # 设置用户权限
+    # 添加到sudo用户组 使用户可以使用sudo指令
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME

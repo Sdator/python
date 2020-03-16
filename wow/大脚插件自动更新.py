@@ -35,23 +35,12 @@ import ctypes
 # 获取当前脚本路径
 # path1 = sys.path[0]
 
-# 组合合法路劲再打开文件
-配置文件 = os.path.normcase('配置.json')
-
-# 文件不存在创建
-if not os.path.isfile(配置文件):
-    with open(配置文件, "a", encoding='utf-8') as json_file:
-        pass
-
-# 读入配置
-# 以utf8打开文件 并转为json
-with open(配置文件, "r+", encoding='utf-8') as json_file:
-    if os.path.getsize(配置文件):
-        # 由于没有检测json的合法性可能会抛出错误
-        配置信息 = json.load(json_file)
+# 组合合法路径再打开文件
+配置文件 = 读入配置('配置.json')
 
 
-if 配置信息["游戏路径"] == "":
+def showWindow():
+    if 配置信息["游戏路径"] == "":
     '''打开选择文件夹对话框'''
     # 初始化tk
     root = tk.Tk()
@@ -64,10 +53,26 @@ if 配置信息["游戏路径"] == "":
     配置信息["游戏路径"] = os.path.normcase(选择的文件夹+"\_classic_")
 
 
+def 读入配置(path):
+    配置文件 = os.path.normcase(path)
+
+    # 文件不存在创建
+    if not os.path.isfile(配置文件):
+        with open(配置文件, "a", encoding='utf-8') as json_file:
+            pass
+
+    # 读入配置
+    # 以utf8打开文件 并转为json
+    with open(配置文件, "r+", encoding='utf-8') as json_file:
+        if os.path.getsize(配置文件):
+            # 由于没有检测json的合法性可能会抛出错误
+            配置信息 = json.load(json_file)
+    return 配置文件
+
+
 def 写出配置(data):
-    # 写出配置
     with open(配置文件, "w", encoding='utf-8') as json_file:
-        # 把dict对象转为json并允许非非ASCII字符
+        # 把dict对象转为json并允许非ASCII字符
         json_file.write(json.dumps(data, ensure_ascii=False))
 
 
@@ -85,6 +90,7 @@ def fun(配置):
         # 测试访问
         r = requests.get(url, stream=True)
         响应代码 = r.status_code
+        # 如果有响应就添加到数组
         if 响应代码 == 200:
             print(url)
             urls.append(url)
@@ -125,6 +131,8 @@ def fun(配置):
 
 
 if __name__ == '__main__':
+    # 显示程序界面
+    showWindow()
     写出配置(配置信息)
     fun(配置信息)
     pass

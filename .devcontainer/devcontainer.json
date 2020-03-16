@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/python-3
 {
-	"name": "PY-Dev",
+	"name": "PY",
 	// 容器构建过程上下文目录
 	// "context": "..",
 	// "dockerFile": "alpine.Dockerfile",
@@ -9,7 +9,7 @@
 	// 配置文件
 	"dockerComposeFile": "docker-compose.yml",
 	// 连接到的服务
-	"service": "py-dev",
+	"service": "dev-py",
 	// 本地文件映射到容器中  不会设置 用runArgs代替
 	// "mounts":["source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached"],
 	// "runArgs": [

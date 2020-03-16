@@ -1,8 +1,8 @@
 version: "3"
 services:
-  py-dev:
-    container_name: py-dev
-    image: sdator/py
+  dev-py:
+    container_name: dev-py
+    image: dev:py
     build:
       dockerfile: .devcontainer/alpine.Dockerfile
       context: ..
