@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 
 def fun(s):
     # 从右边找到符号.的位置 进行切片
@@ -18,4 +20,8 @@ def main(file):
 
 
 if __name__ == "__main__":
+    # 获取脚本当前目录并设置为工作目录
+    workDir = os.path.realpath(os.path.dirname(__file__))
+    os.chdir(workDir)
     main("ip.txt")
+
