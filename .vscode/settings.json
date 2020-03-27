@@ -2,7 +2,8 @@
     // "python.pythonPath": "D:\\Apps\\Scoop\\apps\\python\\current\\python.exe",
     // "python.linting.pylintEnabled": true,
     "terminal.integrated.shell.windows": "C:\\ScoopApp\\git\\current\\bin\\bash.exe",
-    "python.pythonPath": "D:\\Apps\\Scoop\\shims\\python.exe",
-    "python.linting.enabled": false,
+    "python.pythonPath": "D:\\App\\apps\\python\\current\\python.exe",
+    // py代码错误检测
+    "python.linting.enabled": true,
    
 }
