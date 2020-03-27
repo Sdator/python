@@ -1,6 +1,7 @@
 常用指令：
     指定下载源
         pip install 库名 -i pip源
+        pip install pillow -i https://mirrors.aliyun.com/pypi/simple/
 
     卸载库
         pip uninstall 库名
