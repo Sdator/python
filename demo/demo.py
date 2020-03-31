@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
-
-
-def 加法(a, b):
-
-    return a+b
-
+import re
 
 if __name__ == "__main__":
+    aa = [{"var": 1, "name": 1, "cbvar": 1, "nameda": 1, "aename": 1}, {"nameb": 2}]
 
-    身高 = 170
-    体重 = 100
+    # bb = {"a": 1, "b": 1, "c": 1, "d": 1, "e": 1}
+    bb = {k: v for k, v in aa[0].items() if re.match(r'^var$|^name$', k)}
+    # print(bb.items())
 
-    print("输出测试", 身高, 体重)
+    # for k, v in bb.items():
+    #     print(k, v)
+
+    # bb = [k for k, v in aa[0]]
+
+    # new_dict = {key:val for key, val in test_dict.items() if key != 'Zhihu'}
+
+    print(bb)
+    # print(aa,type(aa))
