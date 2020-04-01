@@ -5,9 +5,12 @@
 
 需要用到的包
     pip install selenium -U -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install selenium-wire -i https://mirrors.aliyun.com/pypi/simple/
     -i      使用指定源
     -U      升级到最新版
     --user  将Python 程序包安装到 $HOME/.local 路径下 其中包含三个字文件夹：bin，lib 和 share
+
+
 
 参考连接
     http://www.python3.vip/doc/tutorial/selenium/01/
@@ -31,14 +34,19 @@ python -m pip install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple pip
 
 pip install -U autopep8 --user -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+
+
 '''
 import re
+import json
 import os
 import time
 import pickle
 # 获取域名用
 from urllib.parse import urlparse
-from selenium import webdriver
+# from selenium import webdriver
+# selenium扩展版
+from seleniumwire import webdriver
 
 
 # 修改当前工作目录为脚本运行目录
@@ -111,12 +119,36 @@ def loginSaveCookies(url):
             return cookies
 
 
+# 响应请求数据回调
+def custom(req, req_body, res, res_body):
+
+    path = urlparse(req.path).path
+    if path == "/appi4OKpaUS3431/open/column.resourcelist.get/2.0":
+        req_body = bytes(str(req_body, "utf-8").replace("page_size%5D=10",
+                                                        "page_size%5D=20"), encoding="utf8")
+        req_body = b""
+    pass
+
+
 def 爬取(url, cookies):
     # 修改谷歌配置
     setChromeOption(option)
+
+    # 永不超时，获取所有请求
+    opt = {"connection_timeout": None, "ignore_http_methods": [],
+           'custom_response_handler': custom}
+    # 捕获请求和响应
+    # opt = {'custom_response_handler': custom}
+
     # 创建浏览器
-    # driver = webdriver.Chrome(chrome_options=option)
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(chrome_options=option, seleniumwire_options=opt)
+    # driver = webdriver.Chrome()
+
+    # 捕获特定请求
+    driver.scopes = [
+        '.*/appi4OKpaUS3431/open/.*'
+    ]
+
     # 访问页面
     driver.get(url)
     # 使用 cookies
@@ -125,8 +157,12 @@ def 爬取(url, cookies):
         # 获取 cookies 对象中的包含 var、name的键值
         driver.add_cookie(
             {"value": cookieObj['value'], "name": cookieObj['name']})
-    # 刷新页面
+
+    # 使用 cookies 后需要重新访问页面
     driver.get(url)
+
+    # 延迟处理 等待10秒
+    driver.implicitly_wait(10)
 
     # 如果没跳转成功 则表示 cookies 失效
     if not urlparse(driver.current_url).path == urlparse(url).path:
@@ -136,30 +172,97 @@ def 爬取(url, cookies):
         domian["Cookies"] = loginSaveCookies(url)
         爬取(url, domian["Cookies"])
         return
-    # text = driver.get_log('client')
-    # print(text)
 
-    拦截ajax = '''(function(send) {
-        XMLHttpRequest.prototype.send=function(body) {
-            var info="send data\r\n"+body
-            alert(info)
-            send.call(this, body)
-        }
-    })(XMLHttpRequest.prototype.send)'''
+    # ajax = []
+    # 等待响应返回
+    # request = driver.wait_for_request('/appi4OKpaUS3431/open/combine/1.0')
+    # 返回的二进制响应数据转为str再转为json
+    # request = json.loads(str(request.response.body, "utf-8"))
+    # print(request)
 
-    # 执行控制台命令
-    driver.execute_script(拦截ajax)
-    
+    # https: // pc-shop.xiaoe-tech.com/appi4OKpaUS3431/columnist_detail?id = p_5bb04719e2a39_1B6l08K9
+
+    # 获取视频接口
+    # https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431/open/video.detail.get/1.0
+    # post
+    # data%5Bresource_id%5D=v_5b8e33216acdf_68kY3tpB
+
+    # 获取ID
+    # https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431/open/column.resourcelist.get/2.0
+
+    # for request in driver.requests:
+    #     # 捕获所有 post 发送请求 和 已经响应了的请求
+    #     if request.method == "POST":
+    #         print(request.response)
+    #         # ajax.append(request)
+    #     # print(
+    #     #     1111,
+    #     #     request.path,
+    #     #     request.response.status_code,
+    #     #     request.response.headers['Content-Type']
+    #     # )
+
+    # print(ajax)
     # $$('.columnist-item a')
-
+    # 执行控制台命令
+    # driver.execute_script(拦截ajax)
     # 找到所有课程
-    node = driver.find_elements_by_tag_name("p a")
+
+    ids = []
+    # 获取课程的数量
+    els = len(driver.find_elements_by_css_selector("div.contentMain"))
+    for i in range(els):
+        # 获取课程节点
+        node = driver.find_elements_by_css_selector("div.contentMain")[i]
+        if not node:
+            # driver.quit()
+            return False
+        # 删除旧的请求
+        del driver.requests
+        node.click()
+
+        # driver.execute_script()
+
+        # 捕获所有 post 发送请求 和 已经响应了的请求
+        # isfai = True
+        # while isfai:
+        #     driver.implicitly_wait(10)
+        #     for request in driver.requests:
+        #         path = urlparse(request.path).path
+        #         if path == "/appi4OKpaUS3431/open/column.resourcelist.get/2.0":
+        #             # request.body = bytes(
+        #             #     str(request.body, "utf-8").replace("page_size%5D=10", "page_size%5D=100"), encoding="utf8")
+        #             print('\n============', path, '=================\n')
+        #             isfai = False
+        #             break
+
+        # 获取请求头判断是否ajax请求 判断字典是否存在key
+        # if ('x-requested-with' in request.headers) or (request.method == "POST"):
+        # if request.method == "POST":
+        #     print('\n====', request.path, '====\n')
+        #     # ajax.append(request)
+        #     print(request)
+        # if urlparse(request.path).path == '/appi4OKpaUS3431/open/column.resourcelist.get/2.0':
+
+        # request = driver.wait_for_request(
+        # '/appi4OKpaUS3431/open/column.resourcelist.get/2.0')
+        driver.wait_for_request(
+            '/appi4OKpaUS3431/open/column.resourcelist.get/2.0')
+        # # 返回的二进制响应数据转为str再转为json
+        # request = json.loads(str(request.response.body, "utf-8"))
+        # # # 保存捕获的id
+        # for data in request['data']:
+        #     ids.append((data['title'], data['id']))
+        driver.back()
+
+    # print(ids)
+
     # 打开其中一个课程
-    node[0].click()
-    # 找到课程栏目
-    node = driver.find_elements_by_class_name("div.columnist-item")
-    # 点开第一个
-    node[0].click()
+    #
+    # # 找到课程栏目
+    # node = driver.find_elements_by_class_name("div.columnist-item")
+    # # 点开第一个
+    # node[0].click()
 
 
 if __name__ == "__main__":
