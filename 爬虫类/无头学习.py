@@ -47,12 +47,11 @@ os.chdir(os.path.dirname(__file__))
 # 浏览器相关配置
 option = webdriver.ChromeOptions()
 
-# 登录用 cookies
-Cookies = {}
+# 站点信息
+domian = {"Cookies": {}}
+
 
 # 谷歌浏览器配置
-
-
 def setChromeOption(option):
     # 不加载图片
     prefs = {"profile.managed_default_content_settings.images": 2}
@@ -72,9 +71,8 @@ def loadCookies(CookiesName):
     '''
     # 如果文件存在
     isFile = os.path.isfile(CookiesName)
-
+    # 打开文件后读入cookies
     if isFile:
-        # 打开文件后读入cookies
         with open(CookiesName, "rb") as json_file:
             return pickle.load(json_file)
     return False
@@ -86,19 +84,16 @@ def loginSaveCookies(url):
     '''
     登录网站并保存cookies
     '''
+    # 创建浏览器
     brower = webdriver.Chrome()
-
     # 登录成功后跳转的网页
     jmpurl = r'https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431'
-
     # 打开网页
     brower.get(url)
-
     # 延迟处理 等待10秒
     brower.implicitly_wait(10)
     # 捕获网站标题
     name = urlparse(url).hostname
-
     while True:
         print("等待登录")
         # 延迟3秒
@@ -108,56 +103,54 @@ def loginSaveCookies(url):
             print("登录成功")
             # 保存 cookies
             cookies = brower.get_cookies()
-            # outCookies = {}
-            # # 浏览器关闭
-            # brower.quit()
-            # # 排版另存 cookies
-            # for item in cookies:
-            #     outCookies[item['name']] = item['value']
+            # 浏览器关闭
+            brower.quit()
             # 保存到文件
             with open(name, "wb") as data:
                 pickle.dump(cookies, data)
             return cookies
-            # outputPath = open(name, 'wb')
-            # pickle.dump(Cookies, outputPath)
-            # outputPath.close()
-            # return cookies
 
 
 def 爬取(url, cookies):
     # 修改谷歌配置
-    # setChromeOption(option)
-
-    # 创建驱动对象
+    setChromeOption(option)
+    # 创建浏览器
     # driver = webdriver.Chrome(chrome_options=option)
     driver = webdriver.Chrome()
-    # driver.get("http://www.kpcb.org.cn/h-nd-342.html#_np=111_330")
-    # driver.get("https://www.pornhub.com/")
-
-    # 读入cookies
-    # for cookie in Cookies:
-    #     driver.add_cookie({
-    #         "domain": ".taobao.com",
-    #         "name": cookie,
-    #         "vaClue": Cookies[cookie],
-    #         "path": '/',
-    #         "expires": None
-    #     })
+    # 访问页面
+    driver.get(url)
+    # 使用 cookies
     for cookieObj in Cookies:
         # obj = {k: v for k, v in cookieObj.items() if re.match(r'^value$|^name$', k)}
         # 获取 cookies 对象中的包含 var、name的键值
-        # driver.add_cookie(
-        #     {"value": cookieObj['value'], "name": cookieObj['name']})
-
         driver.add_cookie(
-            "domain": ".taobao.com",
-            "name": cookieObj['name'],
-            "value": cookieObj['value'],
-            "path": '/',
-            "expires": None
-        }
-
+            {"value": cookieObj['value'], "name": cookieObj['name']})
+    # 刷新页面
     driver.get(url)
+
+    # 如果没跳转成功 则表示 cookies 失效
+    if not urlparse(driver.current_url).path == urlparse(url).path:
+        # 关闭浏览
+        driver.quit()
+        # 重新获取 cookies 并重启本程序
+        domian["Cookies"] = loginSaveCookies(url)
+        爬取(url, domian["Cookies"])
+        return
+    # text = driver.get_log('client')
+    # print(text)
+
+    拦截ajax = '''(function(send) {
+        XMLHttpRequest.prototype.send=function(body) {
+            var info="send data\r\n"+body
+            alert(info)
+            send.call(this, body)
+        }
+    })(XMLHttpRequest.prototype.send)'''
+
+    # 执行控制台命令
+    driver.execute_script(拦截ajax)
+    
+    # $$('.columnist-item a')
 
     # 找到所有课程
     node = driver.find_elements_by_tag_name("p a")
@@ -170,11 +163,6 @@ def 爬取(url, cookies):
 
 
 if __name__ == "__main__":
-    # driver.get("https://cnblogs.com/")
-    # from selenium.webdriver.chrome.options import Options
-    # for el in node:
-    #     # driver.execute_script("arguments[0].click();", el)
-    #     el.click()
 
     # 源
     url = r'https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431'
@@ -183,14 +171,18 @@ if __name__ == "__main__":
     # domian = re.match(r".*//(.*)/", url).group(1)
     hostname = urlparse(url).hostname
 
+    # # 判断当前页面跳到了登录页面 表示 cookies 失效
+    # if urlparse(brower.current_url).path == r"/appi4OKpaUS3431/login":
+    #     return False
+
     # 读入 cookies 不存在则 重新登录获取
     Cookies = loadCookies(hostname) or loginSaveCookies(url)
+
+    domian["Cookies"] = Cookies
+
     # 如果 cookies 不存在
     if not Cookies:
         print("未找到cookies")
         exit()
 
     爬取(url, Cookies)
-    # #
-    # Cookies =
-    # if not Cookies:
