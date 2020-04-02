@@ -4,13 +4,16 @@
                         BY AIR 2020.3.27
 
 需要用到的包
-    pip install selenium -U -i https://pypi.tuna.tsinghua.edu.cn/simple
-    pip install selenium-wire -i https://mirrors.aliyun.com/pypi/simple/
+    pip install selenium -U -i https://pypi.tuna.tsinghua.edu.cn/simple         无头浏览器 官方版
+    pip install selenium-wire -i https://mirrors.aliyun.com/pypi/simple/        无头浏览器 请求拦截版 可改请求头 响应数据
+    pip install mitmproxy -i https://pypi.tuna.tsinghua.edu.cn/simple          中间人代理 拦截请求响应修改用
     -i      使用指定源
     -U      升级到最新版
     --user  将Python 程序包安装到 $HOME/.local 路径下 其中包含三个字文件夹：bin，lib 和 share
 
-
+    虚拟环境
+    pip install pipx
+        
 
 参考连接
     http://www.python3.vip/doc/tutorial/selenium/01/
@@ -58,7 +61,6 @@ option = webdriver.ChromeOptions()
 # 站点信息
 domian = {"Cookies": {}}
 
-
 # 谷歌浏览器配置
 def setChromeOption(option):
     # 不加载图片
@@ -70,7 +72,6 @@ def setChromeOption(option):
     # option.add_argument('--disable-gpu')
     # option.add_argument('lang=en.UTF-8')   # 设置语言
     # option.add_argument('--proxy-server=http://127.0.0.1:10000') # 设置代理
-
 
 # 读取cookies
 def loadCookies(CookiesName):
@@ -86,8 +87,6 @@ def loadCookies(CookiesName):
     return False
 
 # 登录并记录cookies
-
-
 def loginSaveCookies(url):
     '''
     登录网站并保存cookies
@@ -117,7 +116,6 @@ def loginSaveCookies(url):
             with open(name, "wb") as data:
                 pickle.dump(cookies, data)
             return cookies
-
 
 # 响应请求数据回调
 def custom(req, req_body, res, res_body):

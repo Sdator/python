@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  mitmproxy:
+    container_name: dev-mitmproxy
+    image: mitmproxy/mitmproxy
+    volumes:
+      - ./.mitmproxy:/home/mitmproxy/.mitmproxy
+      # - ~/.ssh:/home/mitmproxy/.ssh:cached
+      - .:/work
+    tty: true
