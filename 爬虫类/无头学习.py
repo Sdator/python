@@ -51,11 +51,14 @@ from selenium import webdriver
 # selenium扩展版
 # from seleniumwire import webdriver
 from browsermobproxy import Server
+import requests
 
-# 创建代理服务器
+
+# 运行代理服务
 server = Server(
     r'D:\Git\tools\browsermob-proxy-2.1.4\bin\browsermob-proxy.bat')
 server.start()
+# 创建新代理
 proxy = server.create_proxy()
 
 # 修改当前工作目录为脚本运行目录
@@ -64,11 +67,14 @@ os.chdir(os.path.dirname(__file__))
 # 浏览器相关配置
 option = webdriver.ChromeOptions()
 
+Cookies = None
 
 # 谷歌浏览器配置
+
+
 def setChromeOption(option):
     # 不加载图片
-    prefs = {"profile.managed_default_content_settings.images": 2}
+    # prefs = {"profile.managed_default_content_settings.images": 2}
     # 添加实验性质的设置参数
     # option.add_experimental_option("prefs", prefs)
     # 添加启动参数
@@ -79,9 +85,8 @@ def setChromeOption(option):
     option.add_argument("--proxy-server={0}".format(proxy.proxy))
     option.add_argument('--ignore-certificate-errors')
 
+
 # 读取cookies
-
-
 def loadCookies(CookiesName):
     '''
     读入cookies
@@ -127,9 +132,8 @@ def loginSaveCookies(url):
                 pickle.dump(cookies, data)
             return cookies
 
+
 # 响应请求数据回调
-
-
 def custom(req, req_body, res, res_body):
     path = urlparse(req.path).path
     if path == "/appi4OKpaUS3431/open/column.resourcelist.get/2.0":
@@ -159,24 +163,35 @@ def 爬取(url, cookies):
     #     '.*/appi4OKpaUS3431/open/.*'
     # ]
 
-    proxy.headers({"cookies": "{}={}".format(
-        cookies[0]['name'], cookies[0]['value'])})
+    # 测试附加 ajax 请求头数据
+    # proxy.headers({"cookies": "{}={}".format(
+    #     cookies[0]['name'], cookies[0]['value'])})
 
     # 开启代理监控
     # 开启代理监控，如果不监控会拿不到请求内容
     # 捕获 头 、内容主体、二进制数据
-    proxy.new_har("login", options={
-                  'captureContent': True, 'captureHeaders': True, 'captureBinaryContent': True})
-    # proxy.har
+    # proxy.new_har("baidu", options={
+    #               'captureContent': True, 'captureHeaders': True, 'captureBinaryContent': True})
+    headers = {'Content-Type': 'text/plain'}
+
+    url = proxy.host + '/proxy/' + str(proxy.port) + '/filter/response'
+    filter = "contents.setTextContents('<html><body>Response successfully intercepted</body></html>');"
+
+    r = requests.post(url=url, data=filter, headers=headers)
+
+    proxy.new_har("baidu")
+
+    driver.get("http://www.baidu.com")
+
     # 访问页面
-    driver.get(url)
+    # driver.get(url)
     # 使用 cookies
     # for cookie in cookies:
     #     # obj = {k: v for k, v in cookieObj.items() if re.match(r'^value$|^name$', k)}
     #     # 获取 cookies 对象中的包含 var、name的键值
     #     driver.add_cookie(
     #         {"value": cookie['value'], "name": cookie['name']})
-
+    json = proxy.request_interceptor()
     driver.implicitly_wait(10)
     # 使用 cookies 后需要重新访问页面
     driver.get(url)
@@ -290,6 +305,7 @@ if __name__ == "__main__":
 
     # 源
     url = r'https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431'
+    url = r'https://www.baidu.com'
 
     # 取域名
     # domian = re.match(r".*//(.*)/", url).group(1)
@@ -300,13 +316,13 @@ if __name__ == "__main__":
     #     return False
 
     # 读入 cookies 不存在则 重新登录获取
-    Cookies = loadCookies(hostname) or loginSaveCookies(url)
+    # Cookies = loadCookies(hostname) or loginSaveCookies(url)
 
     # domian["Cookies"] = Cookies
 
     # 如果 cookies 不存在
-    if not Cookies:
-        print("未找到cookies")
-        exit()
+    # if not Cookies:
+    #     print("未找到cookies")
+    #     exit()
 
     爬取(url, Cookies)
