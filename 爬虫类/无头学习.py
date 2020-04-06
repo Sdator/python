@@ -54,12 +54,12 @@ from browsermobproxy import Server
 import requests
 
 
-# 运行代理服务
-server = Server(
-    r'D:\Git\tools\browsermob-proxy-2.1.4\bin\browsermob-proxy.bat')
-server.start()
-# 创建新代理
-proxy = server.create_proxy()
+# # 运行代理服务
+# server = Server(
+#     r'D:\Git\tools\browsermob-proxy-2.1.4\bin\browsermob-proxy.bat')
+# server.start()
+# # 创建新代理
+# proxy = server.create_proxy()
 
 # 修改当前工作目录为脚本运行目录
 os.chdir(os.path.dirname(__file__))
@@ -324,5 +324,10 @@ if __name__ == "__main__":
     # if not Cookies:
     #     print("未找到cookies")
     #     exit()
+
+    # 打开文件后读入cookies
+
+    a = pickle.load(open("pc-shop.xiaoe-tech.com", "rb"))
+
 
     爬取(url, Cookies)

@@ -9,7 +9,14 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": [
+                "-e",
+                //     "-m",
+                //     "extract",
+                "F:\\Games\\haruoka\\data.xp3",
+                "F:\\Games\\haruoka\\a\\"
+            ]
         }
     ]
 }
