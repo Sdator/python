@@ -10,13 +10,19 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": [
-                // "-e",
-                // //     "-m",
-                // //     "extract",
-                // "F:\\Games\\haruoka\\data.xp3",
-                // "F:\\Games\\haruoka\\a\\"
-            ]
+            // "args": [
+            //     // "-e",
+            //     // //     "-m",
+            //     // //     "extract",
+            //     // "F:\\Games\\haruoka\\data.xp3",
+            //     // "F:\\Games\\haruoka\\a\\"
+            // ],
+            "redirectOutput": true,
+            // "pythonPath": "${workspaceFolder}"
+            "env": {
+                // 设置模块搜索路径
+                "PYTHONPATH": "${workspaceFolder}"
+            }
         }
     ]
 }
