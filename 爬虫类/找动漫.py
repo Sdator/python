@@ -17,11 +17,14 @@ by 绝 2019.4.28
 
 # print(path)
 
+
+from bs4 import BeautifulSoup
 import xml.dom.minidom  # xml处理模块
 import re
 from enum import Enum, unique
 from lib.net.base import 爬取
 from lib.file.base import 写出文件
+import lib.ipc.tipc as tipc
 
 
 # 枚举类型
@@ -178,8 +181,6 @@ class 动画(Enum):
     博人傳 = 4
 
 
-# from bs4 import BeautifulSoup
-
 def 动漫花园走起(关键字="多羅羅", 那个字幕组=字幕组.全部, 那个分类=分类.動畫):
     url = "https://share.dmhy.org/topics/rss/rss.xml"
 
@@ -201,7 +202,7 @@ def 动漫花园走起(关键字="多羅羅", 那个字幕组=字幕组.全部, 
     items = collection.getElementsByTagName("item")
     # 生成数组对象 后续转化为json
     arr = []
-    地址 = ""
+    地址 = "找不到url"
     # 解析xml
     for item in items:
         # 获取标题
@@ -209,8 +210,10 @@ def 动漫花园走起(关键字="多羅羅", 那个字幕组=字幕组.全部, 
         标题 = title.childNodes[0].data
         # 获取下载地址
         url = item.getElementsByTagName('enclosure')[0]
+        # 是否存在属性
         if url.hasAttribute("url"):
-            地址 = url.getAttribute("url")
+            地址 = url.getAttribute("url")  # 获取属性值
+            tipc.下载(地址)  # 使用ipc发送下载
         # 构建新的数据用作写出
         arr.append({"标题": 标题, "磁链": 地址})
 
@@ -283,12 +286,57 @@ def nyaa走起(关键字="多羅羅", 用户名=用户名.默认, 资源类型=�
     # 生成数组对象 后续转化为json
     arr = []
     for i in range(len(集数)):
+        strTmp = "magnet:?xt=urn:btih:%s%s" % (磁链[i], 服务器)
+        arr.append(
+            {"集数": 集数[i], "种子": 种子[i], "磁链": strTmp}
+        )
+        写出名字 = "%s_%s" % (关键字, 用户名.name)
+        写出文件(写出名字, arr, "w")
+
+
+class 爬光头强():
+
+    def __init__(self):
+        pass
+
+    @property
+    def 返回数据():pass
+    @property
+    def 请求数据():pass
+
+
+    def nyaa走起(关键字="多羅羅", 用户名=用户名.默认, 资源类型=资源类型.动漫_非英语翻译):
+        '''
+            参数一  搜索关键字
+            参数二  字幕组 相关名称到nyaa查找
+        '''
+
+        url = "https://nyaa.si"
+        请求数据 = {
+            "page": "rss",
+            "u": 用户名.value,
+            "q": 关键字,  # 搜索用关键字
+            "c": 资源类型.value
+        }
+
+        返回数据 = 爬取(url, 请求数据)
+
+        # 正则匹配
+        集数 = re.findall(r'<title>(.*)</title>', 返回数据)[1:]
+        种子 = re.findall(r'<link>(.*)</link>', 返回数据)[1:]
+        磁链 = re.findall(r'<nyaa:infoHash>(.*)</nyaa:infoHash>', 返回数据)
+
+        服务器 = r"&dn=%5BU3-Web%5D%20Dororo%20%2F%20%E3%81%A9%E3%82%8D%E3%82%8D%20%2F%20%E5%A4%9A%E7%BE%85%E7%BE%85%202019%20%5BEP15%5D%20%5BMulti-Subs%5D%20%5BAMZN%20WEB-DL%201080p%20AVC%20E-AC-3%5D&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce"
+
+        # 生成数组对象 后续转化为json
+        arr = []
+        for i in range(len(集数)):
             strTmp = "magnet:?xt=urn:btih:%s%s" % (磁链[i], 服务器)
             arr.append(
                 {"集数": 集数[i], "种子": 种子[i], "磁链": strTmp}
             )
-        写出名字 = "%s_%s" % (关键字, 用户名.name)
-        写出文件(写出名字, arr, "w")
+            写出名字 = "%s_%s" % (关键字, 用户名.name)
+            写出文件(写出名字, arr, "w")
 
 
 if __name__ == '__main__':
