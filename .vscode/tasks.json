@@ -23,5 +23,12 @@
                 "${file}",
             ]
         },
+        {
+            "label": "py27",
+            "command": "python2",
+            "args": [
+                "'${file}'"
+            ]
+        },
     ]
 }

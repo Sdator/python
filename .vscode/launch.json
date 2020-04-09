@@ -11,11 +11,11 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "-e",
-                //     "-m",
-                //     "extract",
-                "F:\\Games\\haruoka\\data.xp3",
-                "F:\\Games\\haruoka\\a\\"
+                // "-e",
+                // //     "-m",
+                // //     "extract",
+                // "F:\\Games\\haruoka\\data.xp3",
+                // "F:\\Games\\haruoka\\a\\"
             ]
         }
     ]

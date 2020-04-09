@@ -10,3 +10,6 @@
 /__pycache__
 
 workspaces.json
+*.log
+Lark
+krkr-xp3
