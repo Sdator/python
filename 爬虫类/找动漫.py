@@ -13,12 +13,7 @@ by 绝 2019.4.28
 
 '''
 
-# from sys import *
-
-# print(path)
-
-
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 import xml.dom.minidom  # xml处理模块
 import re
 from enum import Enum, unique
@@ -300,9 +295,14 @@ class 爬光头强():
         pass
 
     @property
-    def 返回数据():pass
+    def 返回数据(): pass
     @property
-    def 请求数据():pass
+    def 请求数据(): pass
+
+    @property
+    def 获取加速服务器():
+        url = "https://ngosang.github.io/trackerslist/trackers_all_ip.txt"
+        
 
 
     def nyaa走起(关键字="多羅羅", 用户名=用户名.默认, 资源类型=资源类型.动漫_非英语翻译):
@@ -346,7 +346,8 @@ if __name__ == '__main__':
     #    动漫花园走起("盾", 字幕组.自由字幕组, 分类.動畫)
     #    动漫花园走起("贤者 简 web", 字幕组.全部, 分类.動畫)
     #    动漫花园走起("火影 新時代", 字幕组.cc动漫, 分类.動畫)
-    动漫花园走起("刀剑神域 WEB-DL", 字幕组.全部, 分类.動畫)
+    # 动漫花园走起("刀剑神域 WEB-DL", 字幕组.全部, 分类.動畫)
+    动漫花园走起("格萊普 WEB-DL", 字幕组.全部, 分类.動畫)
 
 
 '''
