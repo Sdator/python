@@ -18,10 +18,12 @@
             //     // "F:\\Games\\haruoka\\a\\"
             // ],
             "redirectOutput": true,
-            // "pythonPath": "${workspaceFolder}"
+            // 设置工作目录 为当前运行文件所在目录
+            "cwd": "${fileDirname}",
             "env": {
                 // 设置模块搜索路径
                 "PYTHONPATH": "${workspaceFolder}"
+                
             }
         }
     ]

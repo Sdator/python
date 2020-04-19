@@ -1,0 +1,58 @@
+如果您只是想清除Windows应用商店缓存，则可以使用内置组件来完成此操作。
+1.按WinKey + Q显示搜索并键入WSRESET。
+2.在结果中，单击wsreset以重置存储缓存。
+3. Windows应用商店将打开并确认已清除缓存。
+
+
+selenium 函数
+    find_element_by_xpath 或者 find_elements_by_xpath
+    
+    Xpath   一种用路径表示法来选择元素
+    
+        /html/body/div  用绝对路径来选择元素            等同css     html>body>div
+        //div           相对路径选择 选择所有div元素                div
+        //div//p        选择所有div元素下的p子元素                  div p
+
+
+    同等案例
+        选择所有 div 元素里的 p 子元素
+        elements = driver.find_elements_by_xpath("//div//p")
+        elements = driver.find_elements_by_css_selector("div p")
+
+        选择所有 div 元素下的直属 p 子元素
+        elements = driver.find_elements_by_xpath("//div/p")
+        elements = driver.find_elements_by_css_selector("div>p")
+
+        绝对路径选择 html/body/ 下的所有直属 div 子元素
+        elements = driver.find_elements_by_xpath("/html/body/div")
+        elements = driver.find_elements_by_css_selector("html>body>div")
+
+        选择div元素下的所有元素
+        elements = driver.find_elements_by_xpath("//div/*")
+        elements = driver.find_elements_by_xpath("div>*")
+
+        属性选择器
+            选择 select 元素下所有属性class 为 single_choice 的子元素
+            //select[@class='single_choice']
+            select.single_choice
+            select["class=single_choice"]
+
+            如果 class 有多个则需要写全
+            //p[@class="capital huge-city"]
+            p.capital           css选择器可以写单个
+
+            选择拥有 multiple 属性的所有元素
+            //*[@multiple]
+
+            选择带有 style 属性包含字符串 color 的元素
+            //*[contains(@style,'color')]
+
+            style 属性以 color 开头的所有元素
+            //*[starts-with(@style,'color')]
+            
+            style 属性以 color 结尾的所有元素
+            //*[ends-with(@style,'color')]
+
+        次序选择
+            选择所有元素下的第二个出现的 p 元素
+            //p[2]
