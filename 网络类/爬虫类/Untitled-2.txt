@@ -1,0 +1,36 @@
+
+https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431/open/combine/1.0
+
+
+
+https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431/open/column.detail.get/1.0
+
+
+
+post
+    https://pc-shop.xiaoe-tech.com/appi4OKpaUS3431/open/column.resourcelist.get/2.0
+
+data
+    data%5Bpage_index%5D=0&
+    data%5Bpage_size%5D=10&         页数
+    data%5Border_by%5D=start_at%3Adesc&
+    data%5Border_by_array%5D%5B%5D=order_weight%3Adesc&
+    data%5Bresource_id%5D=p_5bb04719e2a39_1B6l08K9&
+    data%5Bstate%5D=0&
+    data%5Bresource_types%5D%5B%5D=1&
+    data%5Bresource_types%5D%5B%5D=2&
+    data%5Bresource_types%5D%5B%5D=3&
+    data%5Bresource_types%5D%5B%5D=4
+
+
+https://diamond.5poi.com/p/t/9Dy3q.png?webp=1
+
+
+
+curl -i -X POST -H 'Content-Type: text/plain' 
+-d "
+request.headers().remove('User-Agent'); 
+request.headers().add('User-Agent', 'My-Custom-User-Agent-String 1.0')
+;"
+
+http://localhost:8080/proxy/8081/filter/request

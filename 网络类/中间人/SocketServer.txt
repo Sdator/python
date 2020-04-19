@@ -1,0 +1,30 @@
+SocketServer
+    select它有4个类： 同步支持
+        TCPServer
+        UDPServer
+        UnixStreamServer
+        UnixDatagramServer
+    异步支持
+        ForkingMixIn
+        ThreadingMixIn
+
+
+
+
+
+linux 端
+    需要用到的工具
+        sudo apt install iptables redsocks
+        iptables    防火墙 用于流量转发
+        redsocks    socoks 代理服务器
+            可以把一些不支持透明代理的代理服务器重定向一下，这样可以实现透明代理了
+         
+            可以将任何TCP连接重定向到SOCKS4，SOCKS5，HTTPS（HTTP / CONNECT）代理服务器。
+            支持SOCKS5/HTTPS登录/密码身份验证。SOCKS4仅支持用户名，密码将被忽略。HTTPS，目前仅实现基本和摘要方案的支持。
+            通过SOCKS5代理服务器，重定向UDP数据包。注：UDP包还是通过UDP发送，所以你不能通过OpenSSH中继UDP。
+            针对UDP DNS查询，回复"truncated reply"
+            重定向任何HTTP连接到不支持透明代理的代理服务器（如老的SQUID）
+            https://github.com/darkk/redsocks
+
+    修改配置 
+        vim /etc/redsocks.conf
