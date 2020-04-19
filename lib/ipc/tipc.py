@@ -26,8 +26,7 @@ def 下载(url):
     '''
     参数1 地址
     '''
-    re=tc.add_uri(url)
-    return 
+    tc.add_uri(url)
 
 
 if __name__ == "__main__":
