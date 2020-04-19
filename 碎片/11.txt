@@ -1,0 +1,27 @@
+oc1.t0shiyuki.xyz
+38765
+
+空格快速查看 quicklook
+文件快速搜索   everything
+scoop install -g quicklook everything
+
+
+
+python2 dll_inject.py 8896 'F:\Games\haruoka\KrkrExtract.dll'
+
+python2 -m pip install pypiwin32 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+pip install autopep8 -i https://pypi.tuna.tsinghua.edu.cn/simple
+ 
+python xp3.py -m extract 'F:\Games\haruoka\data.xp3' 'F:\Games\haruoka\a\'
+
+python3 extractdata.py -e 'F:\Games\haruoka\data.xp3' 'F:\Games\haruoka\a\'
+
+python.exe -m pip install -U "pylint<2.0.0" --user -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+
+手机ROM
+https://get.aosip.dev/
+https://opengapps.org/
+https://download.lineageos.org/
