@@ -9,7 +9,11 @@ SocketServer
         ThreadingMixIn
 
 
+https://www.cnblogs.com/h2zZhou/p/10488628.html
+https://blog.csdn.net/zhongbeida_xue/article/details/54846037
 
+aria2c
+    https://blog.csdn.net/haibin258/article/details/87876387
 
 
 linux 端

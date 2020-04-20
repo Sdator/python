@@ -5,7 +5,7 @@
 
 需要用到的包
     pip install selenium -U -i https://pypi.tuna.tsinghua.edu.cn/simple         无头浏览器 官方版
-    pip install selenium-wire -i https://mirrors.aliyun.com/pypi/simple/        无头浏览器 请求拦截版 可改请求头 响应数据
+    pip install selenium-wire -i https://mirrors.aliyun.com/pypi/simple/        无头浏览器 数据拦截 可改请求头 响应数据
     pip install mitmproxy -i https://pypi.tuna.tsinghua.edu.cn/simple          中间人代理 拦截请求响应修改用
     -i      使用指定源
     -U      升级到最新版
@@ -37,6 +37,16 @@ python -m pip install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple pip
 
 pip install -U autopep8 --user -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+
+弃坑 
+    使用了 selenium 和 selenium-wire 均无法解决
+    学习 browsermobproxy 中间代理碰到一些问题
+
+
+    selenium-wire 
+        偏向捕获请求和响应 但无法修改请求body 可修改响应body
+        采用了时间记录捕获帧
+        使用回调函数 捕获数据 custom(req, req_body, res, res_body):
 
 
 '''

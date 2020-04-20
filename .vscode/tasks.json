@@ -32,7 +32,20 @@
             "args": [
                 "'${file}'"
             ]
-            
         },
+        {
+            "label": "mitmdump监听8086",
+            "command": "mitmdump",
+            "args": [
+                "-p 8086"
+            ]
+        },
+        {
+            "label": "mitmweb",
+            "command": "mitmweb",
+            "args": [
+                "-p 8086"
+            ]
+        }
     ]
 }
