@@ -10,5 +10,5 @@
     // 启用插件
     "[python]": {
         "editor.defaultFormatter": "ms-python.python"
-    },
+    }
 }

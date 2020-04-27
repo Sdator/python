@@ -11,3 +11,7 @@
 
     代码检测 pylint
         python.exe -m pip install -U pylint --user
+
+
+    vscode搭建jupyter环境所需安装包
+        pip3 install -U jupyter pandas --user
