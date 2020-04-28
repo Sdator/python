@@ -20,7 +20,7 @@ from enum import Enum, unique
 from lib.net.base import 爬取
 from lib.file.base import 写出文件
 import lib.ipc.tipc as tipc
-
+from sdator.file import 
 
 # 枚举类型
 
@@ -176,7 +176,7 @@ class 动画(Enum):
     博人傳 = 4
 
 
-def 动漫花园走起(关键字="多羅羅", 那个字幕组=字幕组.全部, 那个分类=分类.動畫):
+async def 动漫花园走起(关键字="多羅羅", 那个字幕组=字幕组.全部, 那个分类=分类.動畫):
     url = "https://share.dmhy.org/topics/rss/rss.xml"
 
     请求数据 = {
@@ -186,7 +186,8 @@ def 动漫花园走起(关键字="多羅羅", 那个字幕组=字幕组.全部, 
         "order": 时序.發佈時間從前往後.value  # 时间排列?
     }
 
-    返回数据 = 爬取(url, 请求数据, "str", 1)
+    返回数据 = await 爬取(url, 请求数据, "str", 1)
+
     写出名字 = "%s_%s" % (关键字, 那个字幕组.name)
     路径 = 写出文件(写出名字, 返回数据, "w", "xml")
 
@@ -302,8 +303,6 @@ class 爬光头强():
     @property
     def 获取加速服务器():
         url = "https://ngosang.github.io/trackerslist/trackers_all_ip.txt"
-        
-
 
     def nyaa走起(关键字="多羅羅", 用户名=用户名.默认, 资源类型=资源类型.动漫_非英语翻译):
         '''
