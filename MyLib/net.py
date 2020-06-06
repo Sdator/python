@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
-
-
+'''
 def 爬取(提交地址, 请求数据, 返回格式="str", 是否使用代理=0):
     """`参数1` 提交地址
 
@@ -38,8 +37,10 @@ def 爬取(提交地址, 请求数据, 返回格式="str", 是否使用代理=0)
 
     return sTmp
 
+'''
 
-class base:
+
+class net:
     _请求头 = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'}
     _代理 = {
@@ -47,9 +48,6 @@ class base:
         "https": "http://127.0.0.1:10001",
     }
     _是否使用代理 = 0
-
-
-class net(base):
 
     def __init__(self, url=""):
         self.url = url
@@ -82,16 +80,15 @@ class net(base):
                          proxies=self.代理, **kwargs)
         return r
 
-    @staticmethod
-    def 读地址文本内容(self, url, **kwargs):
-        r = self._请求(url, **kwargs)
-        self._取回数据 = r.text
-        return self._取回数据
+    # @staticmethod
+    # def 读地址文本内容(self, url, **kwargs):
+    #     r = self._请求(url, **kwargs)
+    #     self._取回数据 = r.text
+    #     return self._取回数据
 
 
 if __name__ == "__main__":
-
-    txt = net.读地址文本内容("https://ngosang.github.io/trackerslist/trackers_all_ip.txt",
-                        是否使用代理=1)
-
+    # txt = net.读地址文本内容("https://ngosang.github.io/trackerslist/trackers_all_ip.txt",
+    #                   是否使用代理=1)
+    pass
 
