@@ -20,7 +20,7 @@ from enum import Enum, unique
 from lib.net.base import 爬取
 from lib.file.base import 写出文件
 import lib.ipc.tipc as tipc
-from sdator.file import 
+
 
 # 枚举类型
 
