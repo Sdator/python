@@ -3,13 +3,15 @@
 by 绝 2019.4.27
 
 '''
-import sys,os
+import lib.AirCom
+import sys
+import os
 
 # 添加当前工作目录到搜索路径中 为了能让模块找到入口
 sys.path.append(os.getcwd())
 
+
 # from lib.AirCom import *
-import lib.AirCom
 
 
 class MDX(object):
@@ -39,9 +41,7 @@ class MDX(object):
         # decode('utf-8').encode('gb2312')..strip("\x00")
 
 
-
-
-def 目录枚举(path, dest,后缀):
+def 目录枚举(path, dest, 后缀):
     files = os.listdir(path)
     for f in files:
         subpath = path + '\\' + f
@@ -66,7 +66,7 @@ def 枚举所有模型路径():
     路径 = r'D:\OneDrive\War3\模型\资源\微光战记'
 
     路径组 = []
-    目录枚举(路径, 路径组,".rms")
+    目录枚举(路径, 路径组, ".rms")
 
     贴图路径 = []
     for f in 路径组:
@@ -82,20 +82,11 @@ if __name__ == '__main__':
     枚举所有模型路径()
 
 
-
-
-
-
-
-
-
-
-
 '''
 os.listdir          目录枚举
 os.path.isdir       是否目录
 os.path.splitext    %~x0   分割文件名和后缀
-os.path.split       %~nx0  分割路径和文件名    
+os.path.split       %~nx0  分割路径和文件名
 
 
 '''

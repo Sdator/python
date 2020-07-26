@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import requests
-'''
+
+
 def 爬取(提交地址, 请求数据, 返回格式="str", 是否使用代理=0):
     """`参数1` 提交地址
 
@@ -36,8 +37,6 @@ def 爬取(提交地址, 请求数据, 返回格式="str", 是否使用代理=0)
         sTmp = r.json()
 
     return sTmp
-
-'''
 
 
 class net:
@@ -91,4 +90,3 @@ if __name__ == "__main__":
     # txt = net.读地址文本内容("https://ngosang.github.io/trackerslist/trackers_all_ip.txt",
     #                   是否使用代理=1)
     pass
-
