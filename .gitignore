@@ -3,3 +3,4 @@ workspaces.json
 Lark
 krkr-xp3
 *.pyc
+/json
