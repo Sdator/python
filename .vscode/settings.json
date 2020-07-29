@@ -9,4 +9,8 @@
         "editor.defaultFormatter": "ms-python.python"
     },
     // "terminal.integrated.shell.windows": ""
+    "code-runner.executorMap": {
+        // 设置 PYTHONIOENCODING 覆盖终端默认编码 解决中文乱码问题
+        "python": "set PYTHONIOENCODING=utf8 && set PYTHONLEGACYWINDOWSSTDIO=utf8 && python"
+    }
 }

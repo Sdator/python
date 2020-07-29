@@ -4,3 +4,4 @@ Lark
 krkr-xp3
 *.pyc
 /json
+*.stackdump
