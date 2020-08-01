@@ -15,3 +15,14 @@ if __name__ == "__main__":
         print(s, 11)
     print(s, 222)
     # print(aa,type(aa))
+# %%
+f = open(r"C:\Users\Air\Desktop\init - 副本.txt", "r")
+
+# %%
+data = f.readline()
+utf8 = data.encode("utf-8")
+utf81 = data[:-1].encode("utf-8")
+# print(data[:-1])
+
+
+# %%
