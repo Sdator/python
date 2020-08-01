@@ -2,7 +2,7 @@
 
 from datetime import datetime
 import json
-import path as pb
+from .path import File
 
 
 def 写出文件(关键字, data, 读写方式="a", 写出格式="json"):
@@ -17,7 +17,7 @@ def 写出文件(关键字, data, 读写方式="a", 写出格式="json"):
     """
     # 构建命名规则
     日期 = datetime.now().strftime("%Y%m%d")
-    路径 = pb.File("/json/%s_%s.%s" % (日期, 关键字, 写出格式))
+    路径 = File("/json/%s_%s.%s" % (日期, 关键字, 写出格式))
     路径.创建目录Ex()
 
     # 如果不是字符串就转码

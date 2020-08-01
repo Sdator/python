@@ -1,8 +1,5 @@
 {
-    // "python.pythonPath": "D:\\Apps\\Scoop\\apps\\python\\current\\python.exe",
     // "python.linting.pylintEnabled": true,
-    "terminal.integrated.shell.windows": "C:\\ScoopApp\\git\\current\\bin\\bash.exe",
-    "python.pythonPath": "c:\\ScoopApp\\python\\current\\python.exe",
     // py代码错误检测
     "python.linting.enabled": true,
     // 开启代码格式化
@@ -10,5 +7,10 @@
     // 启用插件
     "[python]": {
         "editor.defaultFormatter": "ms-python.python"
+    },
+    // "terminal.integrated.shell.windows": ""
+    "code-runner.executorMap": {
+        // 设置 PYTHONIOENCODING 覆盖终端默认编码 解决中文乱码问题
+        "python": "set PYTHONIOENCODING=utf8 && set PYTHONLEGACYWINDOWSSTDIO=utf8 && python"
     }
 }

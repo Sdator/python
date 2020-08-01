@@ -40,16 +40,17 @@ def 爬取(提交地址, 请求数据, 返回格式="str", 是否使用代理=0)
 
 
 class base:
-    _请求头 = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'}
-    _代理 = {
-        "http": "http://127.0.0.1:10001",
-        "https": "http://127.0.0.1:10001",
-    }
-    _是否使用代理 = 0
+    def __init__(self):
+        self.请求头 = {
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'}
+        self.代理 = {
+            "http": "http://127.0.0.1:10001",
+            "https": "http://127.0.0.1:10001",
+        }
+        self.是否使用代理 = 0
 
 
-class net(base):
+class net():
 
     def __init__(self, url=""):
         self.url = url
@@ -92,6 +93,5 @@ class net(base):
 if __name__ == "__main__":
 
     txt = net.读地址文本内容("https://ngosang.github.io/trackerslist/trackers_all_ip.txt",
-                        是否使用代理=1)
-
+                      是否使用代理=1)
 
