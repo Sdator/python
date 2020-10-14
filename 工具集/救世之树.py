@@ -38,7 +38,8 @@ def main():
     # 更新属性
     attr = "Language"
     if not(attr in sound.attrib):
-        raise GetAttrError('找不到 Language 属性')  # 找不到属性 抛出错误 自定义的
+        # raise GetAttrError('找不到 Language 属性')  # 找不到属性 抛出错误 自定义的
+        raise ValueError('找不到 %s 属性' % attr)  # 尽量使用内置的错误类型
     sound.attrib[attr] = "Japanese"
 
     # 解析 xml 为二进制数据
@@ -60,7 +61,7 @@ if __name__ == "__main__":
         print("找不到文件", e)
     except IndexError as e:
         print("无法匹配到节点：", e)
-    except GetAttrError as e:
-        print("属性不存在", e)
+    except ValueError as e:
+        print("ValueError:", e)
 
     print("结束, 本次操作耗时 %.2f 秒" % (now()-t))
