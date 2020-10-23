@@ -12,13 +12,15 @@ python2 dll_inject.py 8896 'F:\Games\haruoka\KrkrExtract.dll'
 python2 -m pip install pypiwin32 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 pip install autopep8 -i https://pypi.tuna.tsinghua.edu.cn/simple
- 
+
 python xp3.py -m extract 'F:\Games\haruoka\data.xp3' 'F:\Games\haruoka\a\'
 
 python3 extractdata.py -e 'F:\Games\haruoka\data.xp3' 'F:\Games\haruoka\a\'
 
 python.exe -m pip install -U "pylint<2.0.0" --user -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+授权
+adb shell pm grant com.uzumapps.wakelockdetector.noroot android.permission.BATTERY_STATS
 
 
 手机ROM

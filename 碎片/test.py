@@ -1,6 +1,45 @@
 # -*- coding: utf-8 -*-
 
 
+from functools import reduce
+
+
+def str2num(s):
+
+    try:
+        num = int(s)  # 尝试将s字符串转成整数型数值并赋值给num
+    except:
+        num = float(s)  # 如果转成整数型报错则转成浮点型并赋值给num
+    else:
+        print('no error!')
+    finally:
+        print(num)
+        return num  # 最终return num，捕获报错语句3件套完整练习
+
+
+def calc(exp):
+
+    ss = exp.split('+')
+
+    ns = map(str2num, ss)
+
+    return reduce(lambda acc, x: acc + x, ns)
+
+
+def main():
+
+    r = calc('100 + 200 + 345')
+
+    print('100 + 200 + 345 =', r)
+
+    r = calc('99 + 88 + 7.6')
+
+    print('99 + 88 + 7.6 =', r)
+
+
+main()
+exit()
+
 # from AirCom import *
 '''
 from socket import *
@@ -55,4 +94,3 @@ if b:
 else:
     # 否则就
     print(test1)
-

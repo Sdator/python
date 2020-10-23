@@ -4,6 +4,10 @@
 用途:
     修改语音为日语
     汉化游戏
+
+实现原理
+    使用 lxml 库对 xml 进行读写
+
 '''
 
 # %%
@@ -21,10 +25,6 @@ os.chdir(os.path.dirname(__file__))
 def now(): return time.time()
 
 
-class GetAttrError(ValueError):
-    pass
-
-
 def main():
     # 找到 xml 路径  利用 everything 的 ctl 工具快速搜索
     sh = r'es -r \\steamapps\\common\\TreeOfSavior\\release\\user.xml$'
@@ -38,7 +38,6 @@ def main():
     # 更新属性
     attr = "Language"
     if not(attr in sound.attrib):
-        # raise GetAttrError('找不到 Language 属性')  # 找不到属性 抛出错误 自定义的
         raise ValueError('找不到 %s 属性' % attr)  # 尽量使用内置的错误类型
     sound.attrib[attr] = "Japanese"
 
