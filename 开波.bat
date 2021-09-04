@@ -25,10 +25,10 @@ REM REM mklink /H "%STORAGE0%" "%STORAGE1%"
 REM mklink /H "%KEYSET0%" "%KEYSET1%"
 
 
-set "插件目录=.vscode\extensions"
-set "用户数据目录=.vscode\Code"
+REM set "插件目录=.vscode\extensions"
+REM set "用户数据目录=.vscode\Code"
 
-rem code --user-data-dir %用户数据目录% .
+REM code --user-data-dir %用户数据目录% .
 code .
 pause
 exit

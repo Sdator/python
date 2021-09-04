@@ -10,8 +10,9 @@ services:
         USERNAME: vscode
     volumes:
       # - ~/.gitconfig:/root/.gitconfig
-      - ~/.ssh:/home/vscode/.ssh:cached
-      - ..:/workspace:cached
+      # - ~/.ssh:/home/vscode/.ssh:cached
+      # - ..:/workspace:cached
+      - /mnt/d/Git/PY:/workspace:cached
     user: vscode
     # working_dir: /workspace
     tty: true
