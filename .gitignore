@@ -1,7 +1,7 @@
 workspaces.json
 *.log
-Lark
-krkr-xp3
 *.pyc
-/json
 *.stackdump
+*.xml
+data
+tools
