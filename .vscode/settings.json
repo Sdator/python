@@ -1,19 +1,20 @@
 {
-    // "python.linting.pylintEnabled": true,
-    // py代码错误检测
-    "python.linting.enabled": true,
-    // 开启代码格式化
-    "python.linting.flake8Enabled": true,
-    // 启用插件
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
-    },
-    // "terminal.integrated.shell.windows": ""
-    "code-runner.executorMap": {
-        // 设置 PYTHONIOENCODING 覆盖终端默认编码 解决中文乱码问题
-        "python": "set PYTHONIOENCODING=utf8 && set PYTHONLEGACYWINDOWSSTDIO=utf8 && python"
-    },
-    "python.pythonPath": "C:\\ScoopApp\\miniconda3\\current\\python.exe",
-    // 自动补全加括号
-    "python.autoComplete.addBrackets": true
+  // "python.linting.pylintEnabled": true,
+  // py代码错误检测
+  "python.linting.enabled": true,
+  // 开启代码格式化
+  "python.linting.flake8Enabled": true,
+  // 启用插件
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  // "terminal.integrated.shell.windows": ""
+  "code-runner.executorMap": {
+    // 设置 PYTHONIOENCODING 覆盖终端默认编码 解决中文乱码问题
+    "python": "set PYTHONIOENCODING=utf8 && set PYTHONLEGACYWINDOWSSTDIO=utf8 && python"
+  },
+  "python.pythonPath": "C:\\ScoopApp\\miniconda3\\current\\python.exe",
+  // 自动补全加括号
+  "python.autoComplete.addBrackets": true,
+  "python.analysis.completeFunctionParens": true
 }
