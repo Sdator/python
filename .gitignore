@@ -5,3 +5,4 @@ workspaces.json
 *.xml
 data
 tools
+*.exe
