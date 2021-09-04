@@ -5,8 +5,8 @@ by 绝 2019.10.6  QQ 250740270
 本程序用于自动更新大脚插件
 
 用到的包
-conda install pyinstaller   # 打包exe
-conda install requests      # 网络通信
+    conda install pyinstaller   # 打包exe
+    conda install requests      # 网络通信
 
 生成二进制文件
 
