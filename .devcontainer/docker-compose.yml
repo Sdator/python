@@ -4,16 +4,19 @@ services:
     container_name: dev-py
     image: dev:py
     build:
-      dockerfile: .devcontainer/alpine.Dockerfile
       context: ..
-      args:
-        USERNAME: vscode
+      dockerfile: .devcontainer/Test.Dockerfile
+    # args:
+    #   USERNAME: vscode
     volumes:
       # - ~/.gitconfig:/root/.gitconfig
-      - ~/.ssh:/home/vscode/.ssh:cached
-      - ..:/workspace:cached
-    user: vscode
-    # working_dir: /workspace
+      # - ~/.ssh/:/home/root/.ssh/:cached
+      - ..:/a1
+      - ..:/a2:ro
+      - ..:/a3:rw
+      - ..:/a4:cached
+    # user: vscode
+    # working_dir: /work
     tty: true
     # ports:
     # - 8000:8000

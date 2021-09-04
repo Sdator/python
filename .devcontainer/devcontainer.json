@@ -1,52 +1,71 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/python-3
 {
-	"name": "PY",
-	// 容器构建过程上下文目录
-	// "context": "..",
-	// "dockerFile": "alpine.Dockerfile",
-	// "image": "sdator/py:dev",
-	// 配置文件
-	"dockerComposeFile": "docker-compose.yml",
-	// 连接到的服务
-	"service": "dev-py",
-	// 本地文件映射到容器中  不会设置 用runArgs代替
-	// "mounts":["source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached"],
-	// "runArgs": [
-	// "-v",
-	// "~/.ssh:/home/vscode/.ssh:ro"
-	//   ],
-	// 连接容器后进入的工作目录
-	"workspaceFolder": "/workspace",
-	// vscode断开连接或者关闭时，是否停止容器
-	"shutdownAction": "stopCompose",
-	// 每次启动执行安装
-	// "postCreateCommand": "pip install -r .devcontainer/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
-	// "postCreateCommand": "ln -s /root/.ssh ~/.ssh",
-	// 使用指定用户登录
-	// "remoteUser": "vscode",
-	// vscode 用户设置
-	"settings": {
-		// 终端路径
-		// "terminal.integrated.shell.linux": "/bin/sh",
-		// 默认对Python文件进行静态检查
-		"python.linting.enabled": true,
-		// 默认在Python文件保存时进行静态检查
-		"python.linting.lintOnSave": true,
-		// 默认使用pylint对Python文件进行静态检查
-		"python.linting.pylintEnabled": true,
-		// py路径
-		"python.pythonPath": "/usr/bin/python3",
-		// pylint 路径
-		"python.linting.pylintPath": "/usr/bin/pylint"
-	},
-	// 推荐插件
-	"extensions": [
-		// py插件
-		"ms-python.python",
-		// git插件
-		// "eamodio.gitlens",
-		// docker插件
-		// "ms-azuretools.vscode-docker"
-	]
+  "name": "PY",
+  // 容器构建过程上下文目录
+  // "context": "..",
+  // "dockerFile": "Test.Dockerfile",
+  // "image": "sdator/py:dev",
+  "build": {
+    "dockerfile": "Test.Dockerfile"
+    // "target": "dev-py"
+    // "context": "."
+  },
+  // 配置文件
+  // "dockerComposeFile": "docker-compose.yml",
+  // 连接到的服务
+  // "service": "dev-py",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+    "USERPROFILE": "${localEnv:USERPROFILE}"
+  },
+  // 容器环境变量
+  "containerEnv": { "MY_VARIABLE": "${localEnv:MY_VARIABLE}" },
+
+  // 连接容器后进入的工作目录
+  "workspaceFolder": "/work",
+  // "workspaceMount": "source=${localWorkspaceFolder},target=/work,type=bind,consistency=cached",
+  // "remoteEnv": { "MY_VARIABLE": "some-value" }
+  // 本地文件映射到容器中  不会设置 用runArgs代替
+  // "mounts": [
+  //   "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached"
+  // ]
+  "mounts": ["source=/mnt/d/Git/code/python,target=/work,type=bind"],
+
+  // "runArgs": ["-v", "$PWD:/work"]
+  "runArgs": ["env"]
+
+  // "runArgs": ["-v", "~/.ssh:/home/vscode/.ssh:ro"]
+
+  // vscode断开连接或者关闭时，是否停止容器
+  // "shutdownAction": "stopCompose",
+  // // 每次启动执行安装
+  // // "postCreateCommand": "pip install -r .devcontainer/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/",
+  // // "postCreateCommand": "ln -s /root/.ssh ~/.ssh",
+  // // 使用指定用户登录
+  // // "remoteUser": "vscode",
+  // // vscode 用户设置
+  // "settings": {
+  //   // 终端路径
+  //   "terminal.integrated.defaultProfile.linux": "/bin/sh"
+  //   // 默认对Python文件进行静态检查
+  //   //   "python.linting.enabled": true,
+  //   //   // 默认在Python文件保存时进行静态检查
+  //   //   "python.linting.lintOnSave": true,
+  //   //   // 默认使用pylint对Python文件进行静态检查
+  //   //   "python.linting.pylintEnabled": true,
+  //   //   // py路径
+  //   //   "python.pythonPath": "/usr/bin/python3",
+  //   //   // pylint 路径
+  //   //   "python.linting.pylintPath": "/usr/bin/pylint"
+  // }
+  // // 推荐插件
+  // "extensions": [
+  //   // py插件
+  //   "ms-python.python"
+  //   // git插件
+  //   // "eamodio.gitlens",
+  //   // docker插件
+  //   // "ms-azuretools.vscode-docker"
+  // ]
 }
