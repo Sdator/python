@@ -32,12 +32,11 @@ import os
 import re                       # 正则
 import zipfile                  # 解包
 import tkinter as tk            # 组件
-from tkinter import filedialog
+from tkinter import filedialog  # 选择框
 import tkinter.messagebox       # 消息框
+import ctypes  # 弹窗
 
-# 弹窗
-import ctypes
-
+import time
 
 configFile = "config.json"
 # 配置文件 = os.path.normcase(configFile)
@@ -45,7 +44,7 @@ configFile = "config.json"
 
 预设配置信息 = {
     "游戏路径": "",
-    "当前版本": "2.5.2.101",
+    "当前版本": "2.5.2.99",
     "线程": 10,
     "历史": ['http://wow.bfupdate.178.com/BigFoot/Interface/classic/Interface.1.13.2.18.zip', ]
 }
@@ -111,21 +110,53 @@ def 写出配置(data):
         json_file.write(json.dumps(data, ensure_ascii=False))
 
 
+def msg(标题, 内容):
+    WS_EX_TOPMOST = 0x40000
+    MB_SYSTEMMODAL = 0x1000
+    ctypes.windll.user32.MessageBoxW(
+        0, 内容, 标题, MB_SYSTEMMODAL)
+
+
 def 获取插件(配置):
+
+    odltime = time.time()
+    print('开始时间：%s' % odltime)
+
     # 历史版本
     urls = []
     版本尾 = re.match(r'.*\.(\d+)$', 配置信息["当前版本"]).group(1)
+    上一个响应 = None
 
     for i in range(配置["线程"]):
         # 取最后一个递增版本号
         url = re.sub(r'\d+(?=.zip$)', str(int(版本尾)+i), 组合地址(配置信息["当前版本"]))
+
+        # print('版本尾：%d' % (int(版本尾)+i))
+        # print('url:%s' % url)
+
         # 测试访问
         r = requests.get(url, stream=True)
         响应代码 = r.status_code
+
+        print(响应代码, (int(版本尾)+i), 777777)
+
         # 如果有响应就添加到数组
         if 响应代码 == 200:
             print(url)
             urls.append(url)
+        # 当前一个响应可用而最后一个不可用
+        if 上一个响应 == 200 and 响应代码 == 404:
+            return
+        上一个响应 = 响应代码
+
+    print('url:%s' % url)
+    print('完成时间：%s' % time.time())
+    sys.exit(0)
+
+    if not len(urls):
+        print("找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数")
+        msg(u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
+        sys.exit(0)
 
     最新版本 = re.match(
         r'.*(?<=Interface\.)([\d\.]+)(?=\.zip$)', urls[-1]).group(1)
@@ -157,7 +188,7 @@ def 获取插件(配置):
     z.extractall(配置信息["游戏路径"])
     z.close()
 
-    ctypes.windll.user32.MessageBoxW(0, u"安装完成！", u"插件进度", 0)
+    msg(u"提示", u"安装完成！")
 
 
 def 打开文件夹():
