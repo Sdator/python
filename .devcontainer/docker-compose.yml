@@ -4,10 +4,10 @@ services:
     container_name: dev-py
     image: dev:py
     build:
-      dockerfile: .devcontainer/alpine.Dockerfile
       context: ..
-      args:
-        USERNAME: vscode
+      dockerfile: .devcontainer/Test.Dockerfile
+    # args:
+    #   USERNAME: vscode
     volumes:
       # - ~/.gitconfig:/root/.gitconfig
       # - ~/.ssh:/home/vscode/.ssh:cached
