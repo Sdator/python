@@ -39,14 +39,7 @@ from tkinter import filedialog  # 选择框
 import tkinter.messagebox       # 消息框
 import ctypes  # 弹窗
 import time
-import asyncio
-import aiohttp
 
-
-print(aiohttp, 132)
-
-
-sys.exit()
 
 # 引用类型可以直接被函数读取并修改
 配置信息 = dict()
@@ -61,6 +54,10 @@ sys.exit()
 
 # 获取当前脚本路径
 # path1 = sys.path[0]
+
+
+def now():
+    return time.time()
 
 
 def 组合地址(版本号):
@@ -130,7 +127,7 @@ def msg(标题, 内容):
 
 def 获取插件(配置):
 
-    odltime = time.time()
+    odltime = now()
     print('开始时间:{odltime}')
 
     # 历史版本
@@ -164,7 +161,6 @@ def 获取插件(配置):
     print("所花时间 {:.2f} 秒".format(time.time() - odltime))
 
     return
-    sys.exit(0)
 
     if not len(urls):
         print("找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数")
