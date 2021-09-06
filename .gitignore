@@ -1,8 +1,11 @@
+__pycache__
+data
+tools
 workspaces.json
 *.log
 *.pyc
 *.stackdump
 *.xml
-data
-tools
 *.exe
+*.png
+*.mp4

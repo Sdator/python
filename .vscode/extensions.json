@@ -1,3 +1,7 @@
 {
-  "recommendations": ["ms-python.python", "tht13.python"]
+  "recommendations": [
+    "ms-python.python",
+    "tht13.python",
+    "gsgupta.opencv-snippets"
+  ]
 }
