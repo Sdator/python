@@ -15,11 +15,10 @@ async def demo():
 
 async def main():
     print(1)
-    # 调用其他异步函数 等待返回结果
-    data = await demo()
+    data = await demo()  # 调用其他异步函数 等待返回结果
     print(data)
 
 
 old = now()
-asyncio.run(main())
+asyncio.run(main())  # 携程对象可以直接运行
 print("耗时：{:.2f}秒".format(now() - old))

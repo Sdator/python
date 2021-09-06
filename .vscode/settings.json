@@ -12,9 +12,6 @@
   "code-runner.executorMap": {
     // 设置 PYTHONIOENCODING 覆盖终端默认编码 解决中文乱码问题
     "python": "set PYTHONIOENCODING=utf8 && set PYTHONLEGACYWINDOWSSTDIO=utf8 && D:\\Apps\\Scoop\\apps\\miniconda3\\4.10.3\\envs\\wow\\python"
-  },
+  }
   // "python.pythonPath": "C:\\ScoopApp\\miniconda3\\current\\python.exe",
-  // 自动补全加括号
-  "python.autoComplete.addBrackets": true,
-  "python.analysis.completeFunctionParens": true
 }

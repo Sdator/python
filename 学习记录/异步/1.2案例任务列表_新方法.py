@@ -1,9 +1,8 @@
 import asyncio
 import time
 
+
 # 取当前时间
-
-
 def now():
     return time.time()
 
@@ -22,14 +21,13 @@ async def demo():
     print(4)  # 3
 
 
-if __name__ == '__main__':
-    old = now()
-    # 把需要异步的函数包装到一起
-    任务集 = [
-        main(),
-        demo()
-    ]
+# 简写方式可以直接把任务列表写到外面
+任务集 = [
+    main(),
+    demo()
+]
 
-    asyncio.run(任务集)
 
-    print("耗时：{:.2f}秒".format(now() - old))
+old = now()
+asyncio.run(asyncio.wait(任务集))  # py3.7的新写法
+print("耗时：{:.2f}秒".format(now() - old))

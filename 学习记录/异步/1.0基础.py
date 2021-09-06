@@ -32,10 +32,7 @@ def 新的写法():
     asyncio.run(fun)
 
 
-if __name__ == '__main__':
-    old = now()
-
-    新的写法()
-    旧的写法()
-
-    print("耗时：{:.2f}秒".format(now() - old))
+old = now()
+# 旧的写法()
+新的写法()
+print("耗时：{:.2f}秒".format(now() - old))
