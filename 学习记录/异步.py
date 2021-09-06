@@ -61,7 +61,7 @@ async def main():
 
     get = fetch(url)
     tasks = [asyncio.ensure_future(get)]
-    # # 0 方式 直接获取结果
+    # # 0 方式 直接获取结果 推荐使用
     for task in asyncio.as_completed(tasks):
         data = await task
         print(type(data))
@@ -73,6 +73,7 @@ async def main():
     # # print(abc)
     # return await asyncio.gather(*tasks)
 
+    # 老方法
     # loop = asyncio.get_event_loop()
     # tasks = [asyncio.ensure_future(test(1)), asyncio.ensure_future(test(2))]
     # return await asyncio.gather(*tasks)

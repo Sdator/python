@@ -5,8 +5,9 @@ by 绝 2019.10.6  QQ 250740270
 本程序用于自动更新大脚插件
 
 用到的包
-    conda install pyinstaller   # 打包exe
-    conda install requests      # 网络通信
+    conda install pyinstaller -y    # 打包exe
+    conda install aiohttp -y        # 异步http
+    conda install requests          # 网络通信
 
     conda install --name wow flake8 -y # 代码检测
 
@@ -38,7 +39,14 @@ from tkinter import filedialog  # 选择框
 import tkinter.messagebox       # 消息框
 import ctypes  # 弹窗
 import time
+import asyncio
+import aiohttp
 
+
+print(aiohttp, 132)
+
+
+sys.exit()
 
 # 引用类型可以直接被函数读取并修改
 配置信息 = dict()
