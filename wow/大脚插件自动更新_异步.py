@@ -27,7 +27,7 @@ conda env create -f py3_pack.yaml
 
 '''
 
-# 网页
+
 import json
 import sys
 import os
@@ -37,9 +37,11 @@ import tkinter as tk            # 组件
 from tkinter import filedialog  # 选择框
 import tkinter.messagebox       # 消息框
 import ctypes  # 弹窗
+from functools import reduce
 import time
-import asyncio
+import asyncio  # 异步
 import aiohttp
+
 
 client = aiohttp.ClientSession()
 
@@ -64,13 +66,6 @@ def now():
     return time.time()
 
 
-def 打开文件夹():
-    if os.path.exists(配置信息["游戏路径"]):
-        os.system("start " + 配置信息["游戏路径"])
-    else:
-        msg("找不到目录", "压缩包存在问题或解压失败")
-
-
 def 组合地址(版本号):
     return "http://wow.bfupdate.178.com/BigFoot/Interface/classic/Interface.%s.zip" % (版本号)
 
@@ -78,7 +73,7 @@ def 组合地址(版本号):
 def 选择游戏目录():
     # 判断key是否存在的正规写法
     # 如果配置中不存在路径则触发路径选择
-    if not('游戏路径' in 配置信息):
+    if not('游戏路径' in 配置信息) or not(os.path.exists(os.path.dirname(配置信息["游戏路径"]))):
         '''打开选择文件夹对话框'''
         # 初始化tk
         root = tk.Tk()
@@ -89,6 +84,11 @@ def 选择游戏目录():
             title=r'选择魔兽世界根目录如：X: \Games\World of Warcraft') or os.getcwd()
         # 获得选择的文件
         # Filepath = filedialog.askopenfilename()
+        # 检测选择目录
+        if sys.path[0] == 选择的文件夹:
+            if msg("提示", f"检测到选择目录和当前目录相同，是否要下载到当前目录？\n选择目录为：{选择的文件夹}", 0x1) == 2:
+                exit()
+
         # 获得选择的文件夹
         配置信息["游戏路径"] = os.path.normcase(选择的文件夹 + "\\_classic_")
 
@@ -127,11 +127,23 @@ def 写出配置(data):
         json_file.write(json.dumps(data, ensure_ascii=False))
 
 
-def msg(标题, 内容):
+def msg(标题, 内容, *t):
+    # MB_OK = 0x0
+    # MB_OKCXL = 0x01
+    # MB_YESNOCXL = 0x03
+    # MB_YESNO = 0x04
+    # MB_HELP = 0x4000
+    # ICON_EXLAIM = 0x30
+    # ICON_INFO = 0x40
+    # ICON_STOP = 0x10
     # WS_EX_TOPMOST = 0x40000
     MB_SYSTEMMODAL = 0x1000
-    ctypes.windll.user32.MessageBoxW(
-        0, 内容, 标题, MB_SYSTEMMODAL)
+    MB = 0
+    if(t != ()):
+        # 传入的样式进行或处理
+        MB = reduce(lambda x, y: x | y, t)
+    return ctypes.windll.user32.MessageBoxW(
+        0, 内容, 标题, MB_SYSTEMMODAL | MB)
 
 
 async def fetch(session, url):
@@ -159,10 +171,6 @@ async def 获取最新版本(client):
         urls = await asyncio.gather(*tasks)
         # 去除 None 结果
         历史 = [url for url in urls if url]
-        # 正则匹配出版本号
-        最新版本 = re.match('.*(\d+\.\d+\.\d+\.\d+)', 历史[-1]).group(1)
-        # 历史版本合并 去重复 排列
-        配置信息["历史"] = sorted(set(配置信息["历史"] + 历史))
 
         print("获取版本耗时：{:.2f}秒".format(now() - old))
 
@@ -171,6 +179,11 @@ async def 获取最新版本(client):
             msg(u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
             # sys.exit(0)
             return
+
+        # 正则匹配出版本号
+        最新版本 = re.match(r'.*(\d+\.\d+\.\d+\.\d+)', 历史[-1]).group(1)
+        # 历史版本合并 去重复 排列
+        配置信息["历史"] = sorted(set(配置信息["历史"] + 历史))
 
         if 配置信息["当前版本"] == 最新版本:
             msg(u"提示", u"当前已是最新版本，无需更新")
@@ -207,16 +220,22 @@ def 解压(file, path):
     msg(u"提示", u"安装完成！")
 
 
+def 打开文件夹(paht):
+    if os.path.exists(paht):
+        os.system("start " + paht)
+    else:
+        msg("找不到目录", "压缩包存在问题或解压失败")
+
+
 async def main(client=123):
     # 更新全局变量的值 由于无法直接赋值但可以使用对象方法
     配置信息.update(读入配置(配置文件))
     选择游戏目录()
-    # 获取插件(配置信息)
     url = await 获取最新版本(client)
-    if url != None:
+    if url:
         name = await 下载插件(client, url)
         解压(name, 配置信息["游戏路径"])
-        打开文件夹()
+        打开文件夹(配置信息["游戏路径"])
 
     写出配置(配置信息)
 
