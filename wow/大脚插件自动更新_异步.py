@@ -4,12 +4,10 @@ by 绝 2019.10.6  QQ 250740270
 
 本程序用于自动更新大脚插件
 
-用到的包
-    conda install pyinstaller -y    # 打包exe
-    conda install aiohttp -y        # 异步http
-    conda install requests          # 网络通信
-
-    conda install --name wow flake8 -y # 代码检测
+用到的第三方包
+    pyinstaller # 打包exe
+    aiohttp     # 异步http通信
+    conda install --name wow aiohttp pyinstaller -y # 安装到wow环境中
 
 生成二进制文件
 
@@ -20,10 +18,10 @@ by 绝 2019.10.6  QQ 250740270
     pyinstaller -F -w 大脚插件自动更新.py -i wow.ico
 
 导出当前环境
-conda env export > py3_pack.yaml
+    conda env export > py3_pack.yaml
 
 导入环境
-conda env create -f py3_pack.yaml
+    conda env create -f py3_pack.yaml
 
 '''
 
@@ -31,19 +29,30 @@ conda env create -f py3_pack.yaml
 import json
 import sys
 import os
-import re                       # 正则
-import zipfile                  # 解包
-import tkinter as tk            # 组件
-from tkinter import filedialog  # 选择框
-import tkinter.messagebox       # 消息框
+import re                         # 正则
+import zipfile                      # 解包
+import tkinter as tk                # 组件
+from tkinter import *
+from tkinter import filedialog      # 选择框
 import ctypes  # 弹窗
 from functools import reduce
 import time
 import asyncio  # 异步
 import aiohttp
+import tkinter.messagebox
 
 
-client = aiohttp.ClientSession()
+# root = tk.Tk()
+# screenwidth = root.winfo_screenwidth()
+# screenheight = root.winfo_screenheight()
+
+# w1 = tk.Message(root, text="提示", width=300)
+# print(w1, 22222222)
+# w1.pack()
+# root.mainloop()
+# print(screenwidth, screenheight)
+# msgbox("111")
+
 
 # 引用类型可以直接被函数读取并修改
 配置信息 = dict()
@@ -58,10 +67,49 @@ client = aiohttp.ClientSession()
     "历史": ['http://wow.bfupdate.178.com/BigFoot/Interface/classic/Interface.1.13.2.18.zip', ]
 }
 
+
 # 获取当前脚本路径
 # path1 = sys.path[0]
 
 
+# 信息框
+def msgbox(title, msg,):
+    root = tk.Tk()
+    root.withdraw()  # 隐藏Tk窗口
+    # 为了兼容之前的代码 做一个返回值转换
+    isOK = True if tk.messagebox.askquestion(
+        title, msg) == "yes" else False
+    return isOK
+
+
+def msg2exit():
+    msg = ("再见", "等想好了目录再来找我吧！")
+
+    tk.messagebox.showinfo(*msg)  # 解构
+    exit()
+
+
+def 选择框(title, **args):
+    tk.Tk().withdraw()  # 隐藏Tk窗口
+
+    选择的文件夹 = filedialog.askdirectory(
+        title=title, **args)
+
+    if not 选择的文件夹:
+        defpath = os.getcwd()
+        if msgbox("提示", f"没有选择目录是否才用当前目录？\n当前目录为：{defpath}"):
+            return defpath
+        else:
+            msg2exit()
+
+    if sys.path[0] == 选择的文件夹:
+        if not msgbox("提示", f"检测到选择目录和当前目录相同，是否要下载到当前目录？\n选择目录为：{选择的文件夹}"):
+            msg2exit()
+
+    return 选择的文件夹
+
+
+# 当前时间
 def now():
     return time.time()
 
@@ -75,22 +123,13 @@ def 选择游戏目录():
     # 如果配置中不存在路径则触发路径选择
     if not('游戏路径' in 配置信息) or not(os.path.exists(os.path.dirname(配置信息["游戏路径"]))):
         '''打开选择文件夹对话框'''
-        # 初始化tk
-        root = tk.Tk()
-        # 隐藏主窗口
-        root.withdraw()
-        # 打开文件对话框
-        选择的文件夹 = filedialog.askdirectory(
-            title=r'选择魔兽世界根目录如：X: \Games\World of Warcraft') or os.getcwd()
-        # 获得选择的文件
-        # Filepath = filedialog.askopenfilename()
-        # 检测选择目录
-        if sys.path[0] == 选择的文件夹:
-            if msg("提示", f"检测到选择目录和当前目录相同，是否要下载到当前目录？\n选择目录为：{选择的文件夹}", 0x1) == 2:
-                exit()
+
+        选择的文件夹 = 选择框(r'选择魔兽世界根目录如：X: \Games\World of Warcraft')
 
         # 获得选择的文件夹
         配置信息["游戏路径"] = os.path.normcase(选择的文件夹 + "\\_classic_")
+
+    exit()
 
 
 def 读入配置(path):
@@ -100,7 +139,7 @@ def 读入配置(path):
 
     # 文件不存在创建
     if not os.path.isfile(配置文件):
-        print("文件不存在")
+        print("文件不存在返回预设配置")
         # 返回空配置
         return 预设配置信息
 
@@ -127,6 +166,7 @@ def 写出配置(data):
         json_file.write(json.dumps(data, ensure_ascii=False))
 
 
+# !调用 w32api 的信息窗口 不利于跨平台 弃用
 def msg(标题, 内容, *t):
     # MB_OK = 0x0
     # MB_OKCXL = 0x01
@@ -176,7 +216,7 @@ async def 获取最新版本(client):
 
         if not len(历史):
             print("找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数")
-            msg(u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
+            msgbox(u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
             # sys.exit(0)
             return
 
@@ -186,7 +226,7 @@ async def 获取最新版本(client):
         配置信息["历史"] = sorted(set(配置信息["历史"] + 历史))
 
         if 配置信息["当前版本"] == 最新版本:
-            msg(u"提示", u"当前已是最新版本，无需更新")
+            msgbox(u"提示", u"当前已是最新版本，无需更新")
             # sys.exit(0)
             return
 
@@ -217,14 +257,14 @@ def 解压(file, path):
     # 解压到指定位置
     z.extractall(path)
     z.close()
-    msg(u"提示", u"安装完成！")
+    msgbox(u"提示", u"安装完成！")
 
 
 def 打开文件夹(paht):
     if os.path.exists(paht):
         os.system("start " + paht)
     else:
-        msg("找不到目录", "压缩包存在问题或解压失败")
+        msgbox("找不到目录", "压缩包存在问题或解压失败")
 
 
 async def main(client=123):
