@@ -25,34 +25,18 @@ by 绝 2019.10.6  QQ 250740270
 
 '''
 
-
 import json
 import sys
 import os
-import re                         # 正则
-import zipfile                      # 解包
-import tkinter as tk                # 组件
-from tkinter import *
-from tkinter import filedialog      # 选择框
+import re                       # 正则
+import zipfile                  # 解包
+import tkinter as tk            # 组件
+from tkinter import filedialog  # 选择框
 import ctypes  # 弹窗
 from functools import reduce
 import time
 import asyncio  # 异步
 import aiohttp
-import tkinter.messagebox
-
-
-# root = tk.Tk()
-# screenwidth = root.winfo_screenwidth()
-# screenheight = root.winfo_screenheight()
-
-# w1 = tk.Message(root, text="提示", width=300)
-# print(w1, 22222222)
-# w1.pack()
-# root.mainloop()
-# print(screenwidth, screenheight)
-# msgbox("111")
-
 
 # 引用类型可以直接被函数读取并修改
 配置信息 = dict()
@@ -68,45 +52,65 @@ import tkinter.messagebox
 }
 
 
-# 获取当前脚本路径
-# path1 = sys.path[0]
+# 修改当前工作目录为脚本运行目录
+os.chdir(os.path.dirname(__file__))
 
 
-# 信息框
-def msgbox(title, msg,):
-    root = tk.Tk()
-    root.withdraw()  # 隐藏Tk窗口
-    # 为了兼容之前的代码 做一个返回值转换
-    isOK = True if tk.messagebox.askquestion(
-        title, msg) == "yes" else False
-    return isOK
+# 界面交互
+class WindowGUI():
+    __root = tk.Tk()
+    __root.withdraw()  # 隐藏Tk窗口
+    __root.attributes("-topmost", True)
 
+    abc = 456
 
-def msg2exit():
-    msg = ("再见", "等想好了目录再来找我吧！")
+    # 信息框
+    @staticmethod
+    def msg(title, msg, type=0):
+        # 为了兼容之前的代码 做一个返回值转换
+        isOK = True if tk.messagebox.askquestion(
+            title, msg) == "yes" else False
+        return isOK
 
-    tk.messagebox.showinfo(*msg)  # 解构
-    exit()
+    @staticmethod
+    def exit(title, msg,):
+        tk.messagebox.showinfo(title, msg)
+        exit()
 
+    @staticmethod
+    def 选择框(title, **args):
+        选择的文件夹 = filedialog.askdirectory(
+            title=title, **args)
+        if not 选择的文件夹:
+            defpath = os.getcwd()
+            if WindowGUI.msg("提示", f"没有选择目录是否才用当前目录？\n当前目录为：{defpath}"):
+                return defpath
+            else:
+                WindowGUI.exit()
+        if sys.path[0] == 选择的文件夹:
+            if not WindowGUI.msg("提示", f"检测到选择目录和当前目录相同，是否要下载到当前目录？\n选择目录为：{选择的文件夹}"):
+                WindowGUI.exit()
+        return 选择的文件夹
 
-def 选择框(title, **args):
-    tk.Tk().withdraw()  # 隐藏Tk窗口
-
-    选择的文件夹 = filedialog.askdirectory(
-        title=title, **args)
-
-    if not 选择的文件夹:
-        defpath = os.getcwd()
-        if msgbox("提示", f"没有选择目录是否才用当前目录？\n当前目录为：{defpath}"):
-            return defpath
-        else:
-            msg2exit()
-
-    if sys.path[0] == 选择的文件夹:
-        if not msgbox("提示", f"检测到选择目录和当前目录相同，是否要下载到当前目录？\n选择目录为：{选择的文件夹}"):
-            msg2exit()
-
-    return 选择的文件夹
+    # !调用 w32api 的信息窗口 不利于跨平台 弃用
+    @staticmethod
+    def __msg(标题, 内容, *t):
+        # MB_OK = 0x0
+        # MB_OKCXL = 0x01
+        # MB_YESNOCXL = 0x03
+        # MB_YESNO = 0x04
+        # MB_HELP = 0x4000
+        # ICON_EXLAIM = 0x30
+        # ICON_INFO = 0x40
+        # ICON_STOP = 0x10
+        # WS_EX_TOPMOST = 0x40000
+        MB_SYSTEMMODAL = 0x1000
+        MB = 0
+        if(t != ()):
+            # 传入的样式进行或处理
+            MB = reduce(lambda x, y: x | y, t)
+        return ctypes.windll.user32.MessageBoxW(
+            0, 内容, 标题, MB_SYSTEMMODAL | MB)
 
 
 # 当前时间
@@ -123,26 +127,19 @@ def 选择游戏目录():
     # 如果配置中不存在路径则触发路径选择
     if not('游戏路径' in 配置信息) or not(os.path.exists(os.path.dirname(配置信息["游戏路径"]))):
         '''打开选择文件夹对话框'''
-
-        选择的文件夹 = 选择框(r'选择魔兽世界根目录如：X: \Games\World of Warcraft')
-
+        选择的文件夹 = WindowGUI.选择框(r'选择魔兽世界根目录如：X: \Games\World of Warcraft')
         # 获得选择的文件夹
         配置信息["游戏路径"] = os.path.normcase(选择的文件夹 + "\\_classic_")
 
-    exit()
-
 
 def 读入配置(path):
-
     # 路径合法性
     配置文件 = os.path.normcase(path)
-
     # 文件不存在创建
     if not os.path.isfile(配置文件):
         print("文件不存在返回预设配置")
         # 返回空配置
         return 预设配置信息
-
     # 读入配置
     # 以utf8打开文件 并转为json
     with open(配置文件, "r+", encoding='utf-8') as json_file:
@@ -164,26 +161,6 @@ def 写出配置(data):
     with open(配置文件, "w", encoding='utf-8') as json_file:
         # 把dict对象转为json并允许非ASCII字符
         json_file.write(json.dumps(data, ensure_ascii=False))
-
-
-# !调用 w32api 的信息窗口 不利于跨平台 弃用
-def msg(标题, 内容, *t):
-    # MB_OK = 0x0
-    # MB_OKCXL = 0x01
-    # MB_YESNOCXL = 0x03
-    # MB_YESNO = 0x04
-    # MB_HELP = 0x4000
-    # ICON_EXLAIM = 0x30
-    # ICON_INFO = 0x40
-    # ICON_STOP = 0x10
-    # WS_EX_TOPMOST = 0x40000
-    MB_SYSTEMMODAL = 0x1000
-    MB = 0
-    if(t != ()):
-        # 传入的样式进行或处理
-        MB = reduce(lambda x, y: x | y, t)
-    return ctypes.windll.user32.MessageBoxW(
-        0, 内容, 标题, MB_SYSTEMMODAL | MB)
 
 
 async def fetch(session, url):
@@ -216,7 +193,8 @@ async def 获取最新版本(client):
 
         if not len(历史):
             print("找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数")
-            msgbox(u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
+            WindowGUI.msg(
+                u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
             # sys.exit(0)
             return
 
@@ -226,7 +204,7 @@ async def 获取最新版本(client):
         配置信息["历史"] = sorted(set(配置信息["历史"] + 历史))
 
         if 配置信息["当前版本"] == 最新版本:
-            msgbox(u"提示", u"当前已是最新版本，无需更新")
+            WindowGUI.msg(u"提示", u"当前已是最新版本，无需更新")
             # sys.exit(0)
             return
 
@@ -250,21 +228,26 @@ async def 下载插件(client, url):
                     fd.write(chunk)
 
 
-# 解压程序
-def 解压(file, path):
-    # 打开压缩包
-    z = zipfile.ZipFile(file, "r")
-    # 解压到指定位置
-    z.extractall(path)
-    z.close()
-    msgbox(u"提示", u"安装完成！")
-
-
 def 打开文件夹(paht):
     if os.path.exists(paht):
         os.system("start " + paht)
     else:
-        msgbox("找不到目录", "压缩包存在问题或解压失败")
+        WindowGUI.exit("找不到目录", "压缩包存在问题或解压失败")
+
+
+# 解压程序
+def 解压(file, path):
+    try:
+        # 打开压缩包
+        z = zipfile.ZipFile(file, "r")
+        # 解压到指定位置
+        z.extractall(path)
+        z.close()
+        isOpen = WindowGUI.msg(u"提示", u"安装完成！ 是否打开文件夹？")
+        if isOpen:
+            打开文件夹(path)
+    except print(0):
+        WindowGUI.exit(u"错误", u"解压失败")
 
 
 async def main(client=123):
@@ -275,8 +258,6 @@ async def main(client=123):
     if url:
         name = await 下载插件(client, url)
         解压(name, 配置信息["游戏路径"])
-        打开文件夹(配置信息["游戏路径"])
-
     写出配置(配置信息)
 
 
