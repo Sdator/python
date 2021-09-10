@@ -1,7 +1,7 @@
 {
   "recommendations": [
-    "ms-python.python",
     "tht13.python",
-    "gsgupta.opencv-snippets"
+    "gsgupta.opencv-snippets",
+    "donjayamanne.python-extension-pack"
   ]
 }
