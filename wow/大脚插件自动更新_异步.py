@@ -135,10 +135,9 @@ def 选择游戏目录():
 def 读入配置(path):
     # 路径合法性
     配置文件 = os.path.normcase(path)
-    # 文件不存在创建
+    # 文件不存在采用预设配置
     if not os.path.isfile(配置文件):
         print("文件不存在返回预设配置")
-        # 返回空配置
         return 预设配置信息
     # 读入配置
     # 以utf8打开文件 并转为json
@@ -166,19 +165,14 @@ def 写出配置(data):
 async def fetch(session, url):
     async with session.head(url) as resp:
         if resp.status == 200:
-            # print(url, resp.headers)
-            # print(await resp.text())
-            # assert resp.status == 200
-            # return resp.status
             return url
 
 
-async def 获取最新版本(client):
+async def 获取最新版本():
     old = now()
-
     # 版本号 分割 并转为整数
     a, b, c, d = [int(i) for i in 配置信息["当前版本"].split(".")]
-    # 上一个响应 = None
+
     # 使用会话
     async with aiohttp.ClientSession() as session:
         # 创建异步任务列表
@@ -195,7 +189,6 @@ async def 获取最新版本(client):
             print("找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数")
             WindowGUI.msg(
                 u"错误", u"找不到可用的版本，尝试加大线程数量或直接修改配置“当前版本”为最近的一个版本的近似数。")
-            # sys.exit(0)
             return
 
         # 正则匹配出版本号
@@ -205,7 +198,6 @@ async def 获取最新版本(client):
 
         if 配置信息["当前版本"] == 最新版本:
             WindowGUI.msg(u"提示", u"当前已是最新版本，无需更新")
-            # sys.exit(0)
             return
 
         配置信息["最新版本"] = 最新版本
@@ -213,7 +205,7 @@ async def 获取最新版本(client):
         return 历史[-1]
 
 
-async def 下载插件(client, url):
+async def 下载插件(url):
     old = now()
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
@@ -221,6 +213,7 @@ async def 下载插件(client, url):
             保存路径 = os.path.normcase("%s.zip" % (配置信息["最新版本"]))
             with open(保存路径, 'wb') as fd:
                 while True:
+                    # 读取文件流
                     chunk = await resp.content.read(文件大小)
                     if not chunk:
                         print("下载耗时：{:.2f}秒".format(now() - old))
@@ -246,18 +239,24 @@ def 解压(file, path):
         isOpen = WindowGUI.msg(u"提示", u"安装完成！ 是否打开文件夹？")
         if isOpen:
             打开文件夹(path)
-    except print(0):
-        WindowGUI.exit(u"错误", u"解压失败")
+    except FileNotFoundError as e:
+        print("解压失败找不到文件:", e)
+        WindowGUI.exit(u"错误", u"找不到压缩文件，检测路径或文件名是否正确")
+    except zipfile.BadZipFile as e:
+        print("文件格式错误:", e)
+        WindowGUI.exit(u"错误", u"文件格式错误,检测是否正确的zip文件")
 
 
-async def main(client=123):
-    # 更新全局变量的值 由于无法直接赋值但可以使用对象方法
+async def main():
+    # 更新全局变量的值 由于全局变量无法直接赋值 但可以执行其方法 引用类型的元素可以赋值
     配置信息.update(读入配置(配置文件))
     选择游戏目录()
-    url = await 获取最新版本(client)
+    url = await 获取最新版本()
     if url:
-        name = await 下载插件(client, url)
+        name = await 下载插件(url)
         解压(name, 配置信息["游戏路径"])
+        print(url, 555555555)
+
     写出配置(配置信息)
 
 
@@ -265,20 +264,9 @@ if __name__ == '__main__':
     # 错误处理
     try:
         asyncio.run(main())
-        # asyncio.run(client.close())  # 关闭会话客户端
-
-        # asyncio.get_event_loop().run_until_complete(main(client))
-        # loop = asyncio.get_event_loop()
-        # client = aiohttp.ClientSession()
-        # results = loop.run_until_complete(main(client))
-        # 要手动关闭自己创建的ClientSession，并且client.close()是个协程，得用事件循环关闭
-        # loop.run_until_complete(client.close())
-        # # 在关闭loop之前要给aiohttp一点时间关闭ClientSession
-        # loop.run_until_complete(asyncio.sleep(3))
-        # loop.close()
-        # print(results)
-        # print(type(results))
-
-    except json.decoder.JSONDecodeError as e:
-        # 配置信息 = 预设配置信息
-        print('解析json失败，使用预设配置，错误:', e)
+    except aiohttp.client_exceptions.ClientConnectorError as e:
+        print("远程计算机拒绝网络连接:", e)
+    except aiohttp.client_exceptions.InvalidURL as e:
+        print("地址格式格式有误", e)
+    except AssertionError as e:
+        print("网络状态非200", e)
