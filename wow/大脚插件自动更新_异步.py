@@ -41,7 +41,6 @@ import aiohttp
 # 引用类型可以直接被函数读取并修改
 配置信息 = dict()
 配置文件 = "config.json"
-
 预设配置信息 = {
     "游戏路径": "",
     "当前版本": "1.13.2.18",
@@ -62,9 +61,8 @@ class WindowGUI():
     __root.withdraw()  # 隐藏Tk窗口
     __root.attributes("-topmost", True)
 
-    abc = 456
-
     # 信息框
+
     @staticmethod
     def msg(title, msg, type=0):
         # 为了兼容之前的代码 做一个返回值转换
