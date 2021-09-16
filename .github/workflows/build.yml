@@ -11,9 +11,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     - name: Setup PY
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: '3.x'
+      uses: actions/setup-python@v2.2.2
+      with:
+        python-version: '3.x'
     - name: Install and Build
         working-directory: ./wow # 指定工作目录
         run: |
