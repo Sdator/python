@@ -1,24 +1,24 @@
-name: Build CI
+name: WOW Build CI
 on:
   push:
     paths:  # 当一下目录发生推送的时候触发
-      - './wow/**'
+      - './wow/大脚插件自动更新_异步.py'
   workflow_dispatch:
 jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@master
-      
+      uses: actions/checkout@master # 拉取仓库master分支
+
     - name: Setup PY
       uses: actions/setup-python@v2.2.2
       with:
-        python-version: '3.x'
-        
+        python-version: '3.x' # 使用py3 最新版本
+
     - name: Install and Build
       working-directory: ./wow  # 指定工作目录
       run: |
-          pip install pyinstaller # 打包exe
+          pip install pyinstaller # 打包exe用
           pip install aiohttp     # 异步http通信
-          pyinstaller -F -w 大脚插件自动更新_异步.py -i wow.ico
+          pyinstaller -F -w 大脚插件自动更新_异步.py -i wow.ico # 生成二进制文件
