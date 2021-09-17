@@ -15,7 +15,7 @@ by 绝 2019.10.6  QQ 250740270
     -w 表示去掉控制台窗口，这在GUI界面时非常有用。不过如果是命令行程序的话那就把这个选项删除吧！
     -i 表示可执行文件的图标
 
-    pyinstaller -F -w 大脚插件自动更新.py -i wow.ico
+    pyinstaller -F -w 大脚插件自动更新_异步.py -i wow.ico
 
 导出当前环境
     conda env export > py3_pack.yaml
@@ -32,9 +32,9 @@ import re                       # 正则
 import zipfile                  # 解包
 import tkinter as tk            # 组件
 from tkinter import filedialog  # 选择框
-import ctypes  # 弹窗
-from functools import reduce
-import time
+import ctypes  # 弹窗 打包不需要🙅‍
+from functools import reduce  # 打包不需要🙅‍
+import time  # 测试用打包不需要🙅‍
 import asyncio  # 异步
 import aiohttp
 
@@ -52,7 +52,8 @@ import aiohttp
 
 
 # 修改当前工作目录为脚本运行目录
-os.chdir(os.path.dirname(__file__))
+# 打包之前要把这个注释掉 否则会报错 路径不合法 可能是使用了中文的问题
+# os.chdir(os.path.dirname(__file__))
 
 
 # 界面交互
@@ -84,13 +85,14 @@ class WindowGUI():
             if WindowGUI.msg("提示", f"没有选择目录是否才用当前目录？\n当前目录为：{defpath}"):
                 return defpath
             else:
-                WindowGUI.exit()
+                WindowGUI.exit("再见", "等想好了目录再来找我吧！")
+
         if sys.path[0] == 选择的文件夹:
             if not WindowGUI.msg("提示", f"检测到选择目录和当前目录相同，是否要下载到当前目录？\n选择目录为：{选择的文件夹}"):
-                WindowGUI.exit()
+                WindowGUI.exit("再见", "等想好了目录再来找我吧！")
         return 选择的文件夹
 
-    # !调用 w32api 的信息窗口 不利于跨平台 弃用
+    # !调用 w32api 的信息窗口 不利于跨平台 弃用 打包不需要🙅‍
     @staticmethod
     def __msg(标题, 内容, *t):
         # MB_OK = 0x0
@@ -252,8 +254,8 @@ async def main():
     url = await 获取最新版本()
     if url:
         name = await 下载插件(url)
-        解压(name, 配置信息["游戏路径"])
-        print(url, 555555555)
+        # 解压(name, 配置信息["游戏路径"])
+        print(url, name, 555555555)
 
     写出配置(配置信息)
 
