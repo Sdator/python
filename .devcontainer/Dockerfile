@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:alpine as test
 
 RUN echo -e "http://mirrors.aliyun.com/alpine/v3.8/main/\nhttp://mirrors.aliyun.com/alpine/v3.8/community/" > /etc/apk/repositories \
     && apk update \
